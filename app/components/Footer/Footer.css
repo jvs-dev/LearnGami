@@ -1,6 +1,6 @@
 .footer {
-  background-color: #f8fafc;
-  border-top: 1px solid #e2e8f0;
+  background-color: #1e1e1e;
+  border-top: 1px solid #444444;
   padding: 2rem 0;
   margin-top: auto;
 }
@@ -20,7 +20,7 @@
 }
 
 .footer__copyright {
-  color: #64748b;
+  color: #bbbbbb;
   font-size: 0.875rem;
 }
 
@@ -35,13 +35,13 @@
 
 .footer__nav-link {
   text-decoration: none;
-  color: #64748b;
+  color: #bbbbbb;
   font-size: 0.875rem;
   transition: color 0.2s ease;
 }
 
 .footer__nav-link:hover {
-  color: #4f46e5;
+  color: #64b5f6;
 }
 
 /* Responsive styles */

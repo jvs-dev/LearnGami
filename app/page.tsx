@@ -9,30 +9,33 @@ import "./page.css";
 const mockCourses = [
   {
     id: "1",
-    title: "Aula 1",
+    title: "Pássaro de papel",
     description:
-      "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatibus, fugiat atque necessitatibus voluptas voluptates facilis quas ipsa officiis incidunt similique culpa quaerat hic deserunt, repellendus nostrum aliquid reiciendis totam ad.",
-    duration: "8 horas",
-    imageUrl: "",
+      "Passaro de papél um pouco mais dificil que os convencionais.",
+    duration: "3 Minutos",
+    imageUrl: "https://images.pexels.com/photos/1272837/pexels-photo-1272837.jpeg",    
     status: "active" as const,
+    createdAt: new Date().toISOString() // Setting to current date to show as "Novo"
   },
   {
     id: "2",
-    title: "Aula 2",
+    title: "Borboleta de papel",
     description:
-      "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatibus, fugiat atque necessitatibus voluptas voluptates facilis quas ipsa officiis incidunt similique culpa quaerat hic deserunt, repellendus nostrum aliquid reiciendis totam ad.",
-    duration: "12 horas",
-    imageUrl: "",
+      "Borboleta de papél um pouco mais dificil que os convencionais.",
+    duration: "2 Minutos",
+    imageUrl: "https://images.pexels.com/photos/114977/pexels-photo-114977.jpeg",
     status: "active" as const,
+    createdAt: "2023-05-16T14:45:00Z" // Adding creation date
   },
   {
     id: "3",
     title: "Aula 3",
     description:
       "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatibus, fugiat atque necessitatibus voluptas voluptates facilis quas ipsa officiis incidunt similique culpa quaerat hic deserunt, repellendus nostrum aliquid reiciendis totam ad.",
-    duration: "10 horas",
-    imageUrl: "",
+    duration: "1 Minuto",
+    imageUrl: "https://images.pexels.com/photos/1840756/pexels-photo-1840756.jpeg",
     status: "inactive" as const,
+    createdAt: "2023-05-17T09:15:00Z" // Adding creation date
   },
 ];
 

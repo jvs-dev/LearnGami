@@ -11,6 +11,7 @@ interface Course {
   duration: string;
   imageUrl: string;
   status: 'active' | 'inactive';
+  createdAt: string; 
 }
 
 interface CourseListProps {

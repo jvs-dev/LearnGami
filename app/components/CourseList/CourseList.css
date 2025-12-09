@@ -1,12 +1,13 @@
 .course-list {
   padding: 2rem 1rem;
+  background-color: #141414;
 }
 
 .course-list__title {
   font-size: 1.5rem;
   font-weight: 600;
   margin-bottom: 1.5rem;
-  color: #1e293b;
+  color: #e0e0e0;
   text-align: center;
 }
 
@@ -20,7 +21,7 @@
 
 .course-list__empty {
   text-align: center;
-  color: #64748b;
+  color: #bbbbbb;
   font-size: 1.125rem;
   padding: 3rem 1rem;
 }

@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import React from 'react';
-import './CourseCard.css';
+import React from "react";
+import "./CourseCard.css";
 
 interface Course {
   id: string;
@@ -9,7 +9,8 @@ interface Course {
   description: string;
   duration: string;
   imageUrl: string;
-  status: 'active' | 'inactive';
+  status: "active" | "inactive";
+  createdAt: string;
 }
 
 interface CourseCardProps {
@@ -18,18 +19,32 @@ interface CourseCardProps {
   onDelete?: (id: string) => void;
 }
 
-const CourseCard: React.FC<CourseCardProps> = ({ 
-  course, 
+const CourseCard: React.FC<CourseCardProps> = ({
+  course,
   onEdit,
-  onDelete 
+  onDelete,
 }) => {
+  const formattedDate = new Date(course.createdAt).toLocaleDateString("pt-BR", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+  });
+
+  const isNewCourse = () => {
+    const createdDate = new Date(course.createdAt);
+    const currentDate = new Date();
+    const timeDifference = currentDate.getTime() - createdDate.getTime();
+    const daysDifference = timeDifference / (1000 * 3600 * 24);
+    return daysDifference <= 30;
+  };
+
   return (
     <div className="course-card">
       <div className="course-card__image-container">
         {course.imageUrl ? (
-          <img 
-            src={course.imageUrl} 
-            alt={course.title} 
+          <img
+            src={course.imageUrl}
+            alt={course.title}
             className="course-card__image"
           />
         ) : (
@@ -40,24 +55,26 @@ const CourseCard: React.FC<CourseCardProps> = ({
           </div>
         )}
       </div>
-      
+
       <div className="course-card__content">
-        <h3 className="course-card__title">{course.title}</h3>
+        <h3 className="course-card__title">
+          {course.title}
+          {isNewCourse() && (
+            <span className="course-card__new-badge">Novo</span>
+          )}
+        </h3>
         <p className="course-card__description">{course.description}</p>
-        
+
         <div className="course-card__info">
           <span className="course-card__duration">
             Duração: {course.duration}
           </span>
-          <span className={`course-card__status course-card__status--${course.status}`}>
-            {course.status === 'active' ? 'Ativo' : 'Inativo'}
-          </span>
-        </div>
-        
+        </div>        
+
         {(onEdit || onDelete) && (
           <div className="course-card__actions">
             {onEdit && (
-              <button 
+              <button
                 onClick={() => onEdit(course.id)}
                 className="course-card__action-button course-card__action-button--edit"
               >
@@ -65,7 +82,7 @@ const CourseCard: React.FC<CourseCardProps> = ({
               </button>
             )}
             {onDelete && (
-              <button 
+              <button
                 onClick={() => onDelete(course.id)}
                 className="course-card__action-button course-card__action-button--delete"
               >
