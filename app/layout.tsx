@@ -1,12 +1,14 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { type_second } from "./functions/fonts";
+import Header from "./components/Header/Header";
+import Footer from "./components/Footer/Footer";
 
 export const metadata: Metadata = {
-  title: "LearnGami - Aprenda origami",
-  description: "Plataforma de cursos de Origami",
-  keywords: "origami, aprenda origami, plataforma de origami",
-  authors: [{ name: "LearnGami" }],
+  title: "CourseManager - Sistema de Gestão de Cursos",
+  description: "Plataforma completa para gerenciamento de cursos",
+  keywords: "cursos, gerenciamento, educação, plataforma",
+  authors: [{ name: "CourseManager" }],
 };
 
 export default function RootLayout({
@@ -16,7 +18,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="pt-BR">
-      <body className={type_second.variable}>{children}</body>
+      <body className={type_second.variable}>        
+        <div className="app__body">{children}</div>        
+      </body>
     </html>
   );
 }

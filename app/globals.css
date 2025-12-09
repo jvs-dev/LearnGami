@@ -8,7 +8,9 @@ body {
   color: #333;
   --type-first: Helvetica, Arial, sans-serif;
   --type-second: var(--font-spectral), Georgia;
+  --type-third: var(--font-poppins), sans-serif;
   font-family: var(--type-first);
+  --primary-color: #0285ff;
 }
 
 h1,
@@ -45,7 +47,7 @@ a {
 }
 
 .container {
-  max-width: 50rem;
+  max-width: 58rem;
   padding: 0 1rem;
   margin: 0 auto;
 }
