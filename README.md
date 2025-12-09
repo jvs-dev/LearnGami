@@ -1,36 +1,38 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+## 🎯 Objetivo do Projeto
 
-## Getting Started
+Este projeto faz parte de um desafio técnico para um processo seletivo, com o objetivo de desenvolver uma aplicação web full stack utilizando **Next.js** no frontend e **Node.js** no backend. A aplicação consiste em um sistema simples de gestão de cursos, com autenticação de usuários e funcionalidades completas de CRUD.
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## 💡 Sobre o Desafio
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+O desafio proposto envolve:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- **Autenticação de Usuários**: com cadastro, login e uso de JWT.
+- **Gestão de Cursos**: criar, listar, editar e excluir cursos (acesso restrito).
+- **Catálogo Público**: página aberta listando cursos ativos.
+- **Boas Práticas**: organização de código, componentização, responsividade e documentação clara.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Além disso, o projeto será avaliado por:
 
-## Learn More
+- Estrutura e clareza do frontend e backend
+- Integração entre as partes
+- Qualidade visual e experiência do usuário
+- Organização do repositório e histórico de commits
+- (Opcional) Uso de diferenciais como testes, paginação, filtros e deploy
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 🧩 Tecnologias Utilizadas
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- **Frontend**: Next.js, TypeScript, TailwindCSS (ou styled-components)
+- **Backend**: Node.js, Express, Prisma (ou outro ORM)
+- **Autenticação**: JWT
+- **Banco de Dados**: PostgreSQL / SQLite / MySQL
+- **Deploy** (opcional): Vercel / Render / Railway
 
-## Deploy on Vercel
+---
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## ▶️ Como Rodar o Projeto
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Instruções detalhadas de instalação e execução estarão disponíveis nos respectivos repositórios do frontend e backend.

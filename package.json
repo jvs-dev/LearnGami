@@ -9,6 +9,9 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@types/jsonwebtoken": "^9.0.10",
+    "axios": "^1.13.2",
+    "jsonwebtoken": "^9.0.3",
     "next": "16.0.8",
     "react": "19.2.1",
     "react-dom": "19.2.1"
