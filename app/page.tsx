@@ -9,27 +9,27 @@ import "./page.css";
 const mockCourses = [
   {
     id: "1",
-    title: "Introdução ao React",
+    title: "Aula 1",
     description:
-      "Aprenda os fundamentos do React e comece a construir aplicações web modernas.",
+      "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatibus, fugiat atque necessitatibus voluptas voluptates facilis quas ipsa officiis incidunt similique culpa quaerat hic deserunt, repellendus nostrum aliquid reiciendis totam ad.",
     duration: "8 horas",
     imageUrl: "",
     status: "active" as const,
   },
   {
     id: "2",
-    title: "Next.js Completo",
+    title: "Aula 2",
     description:
-      "Domine o Next.js e crie aplicações web performáticas e escaláveis.",
+      "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatibus, fugiat atque necessitatibus voluptas voluptates facilis quas ipsa officiis incidunt similique culpa quaerat hic deserunt, repellendus nostrum aliquid reiciendis totam ad.",
     duration: "12 horas",
     imageUrl: "",
     status: "active" as const,
   },
   {
     id: "3",
-    title: "TypeScript Avançado",
+    title: "Aula 3",
     description:
-      "Aprofunde seus conhecimentos em TypeScript e escreva código mais seguro.",
+      "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatibus, fugiat atque necessitatibus voluptas voluptates facilis quas ipsa officiis incidunt similique culpa quaerat hic deserunt, repellendus nostrum aliquid reiciendis totam ad.",
     duration: "10 horas",
     imageUrl: "",
     status: "inactive" as const,
@@ -45,9 +45,7 @@ export default function Home() {
           <section className="hero">
             <div className="hero__container container">
               <h1 className="hero__title">Bem-vindo ao LearnGami</h1>
-              <p className="hero__subtitle">
-                O melhor do origami esta aqui
-              </p>
+              <p className="hero__subtitle">O melhor do origami esta aqui</p>
               <a href="#cursos" className="hero__button">
                 Ver Cursos
               </a>
