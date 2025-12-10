@@ -14,18 +14,16 @@ const Header: React.FC = () => {
   const handleLogout = () => {
     authLogout(); // Clear token from localStorage
     logout(); // Update context state
-    setIsDropdownOpen(false); // Close dropdown
+    setIsDropdownOpen(false);
   };
-
-  // Get user's first name
+  
   const getUserFirstName = () => {
     if (user?.name) {
       return `${user.name.split(" ")[0]} ${user.name.split(" ")[1]}`;
     }
     return "";
   };
-
-  // Close dropdown when clicking outside
+  
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (

@@ -3,22 +3,22 @@
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import "./registro.css";
-import { register } from "../services/authService";
-import { useUser } from "../UserContext"; // Import useUser hook
-import 'bootstrap-icons/font/bootstrap-icons.css'; // Import bootstrap-icons CSS
+import { register, fetchUserData } from "../services/authService";
+import { useUser } from "../UserContext";
+import "bootstrap-icons/font/bootstrap-icons.css";
 
 export default function RegistroPage() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [showPassword, setShowPassword] = useState(false); // State for password visibility
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false); // State for confirm password visibility
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
   const router = useRouter();
-  const { login: loginUser } = useUser(); // Get login function from context
+  const { login: loginUser } = useUser();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -33,19 +33,21 @@ export default function RegistroPage() {
 
     try {
       const { data, error: apiError } = await register(name, email, password);
-      
+
       if (apiError) {
         setError(apiError);
         setLoading(false);
         return;
       }
 
-      // Set user data in context after successful registration
-      if (data && data.user) {
-        loginUser(data.user);
+      // Fetch user data after successful registration
+      if (data && data.token) {
+        const userData = await fetchUserData(data.token);
+        if (userData) {
+          loginUser(userData);
+        }
       }
-
-      // Registration successful, redirect to home page
+      
       router.push("/"); // Redirect to home page after successful registration
     } catch (err) {
       setError("Erro ao registrar usuário. Tente novamente.");
@@ -120,7 +122,9 @@ export default function RegistroPage() {
                   onClick={() => setShowPassword(!showPassword)}
                   aria-label={showPassword ? "Ocultar senha" : "Mostrar senha"}
                 >
-                  <i className={showPassword ? "bi bi-eye-slash" : "bi bi-eye"}></i>
+                  <i
+                    className={showPassword ? "bi bi-eye-slash" : "bi bi-eye"}
+                  ></i>
                 </button>
               </div>
             </div>
@@ -143,9 +147,15 @@ export default function RegistroPage() {
                   type="button"
                   className="registro__password-toggle"
                   onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                  aria-label={showConfirmPassword ? "Ocultar senha" : "Mostrar senha"}
+                  aria-label={
+                    showConfirmPassword ? "Ocultar senha" : "Mostrar senha"
+                  }
                 >
-                  <i className={showConfirmPassword ? "bi bi-eye-slash" : "bi bi-eye"}></i>
+                  <i
+                    className={
+                      showConfirmPassword ? "bi bi-eye-slash" : "bi bi-eye"
+                    }
+                  ></i>
                 </button>
               </div>
             </div>

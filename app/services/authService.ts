@@ -1,40 +1,54 @@
 import { api } from './api';
 
-// User interface
 export interface User {
   id: number;
   email: string;
   name: string;
 }
 
-// Register response interface
+
 export interface RegisterResponse {
   message: string;
   token: string;
   user: User;
 }
 
-// Login response interface
+
 export interface LoginResponse {
   message: string;
   token: string;
   user: User;
 }
 
-// Register function
+
+export const fetchUserData = async (token: string) => {
+  try {
+    const { data, error } = await api.get('/auth/me', token);
+    if (error) {
+      console.error('Failed to fetch user data:', error);
+      return null;
+    }
+    return data.user as User;
+  } catch (e) {
+    console.error('Failed to fetch user data:', e);
+    return null;
+  }
+};
+
+
 export const register = async (name: string, email: string, password: string) => {
   try {
     const { data, error } = await api.post('/auth/register', { name, email, password });
-    
+
     if (error) {
       return { data: null, error };
     }
-    
-    // Save token to localStorage
+
+
     if (data.token) {
       localStorage.setItem('token', data.token);
     }
-    
+
     return { data, error: null };
   } catch (error) {
     const errorMessage = error instanceof Error ? error.message : 'Erro desconhecido';
@@ -42,20 +56,20 @@ export const register = async (name: string, email: string, password: string) =>
   }
 };
 
-// Login function
+
 export const login = async (email: string, password: string) => {
   try {
     const { data, error } = await api.post('/auth/login', { email, password });
-    
+
     if (error) {
       return { data: null, error };
     }
-    
-    // Save token to localStorage
+
+
     if (data.token) {
       localStorage.setItem('token', data.token);
     }
-    
+
     return { data, error: null };
   } catch (error) {
     const errorMessage = error instanceof Error ? error.message : 'Erro desconhecido';
@@ -63,13 +77,13 @@ export const login = async (email: string, password: string) => {
   }
 };
 
-// Logout function
+
 export const logout = () => {
   localStorage.removeItem('token');
   localStorage.removeItem('userData');
 };
 
-// Check if user is authenticated
+
 export const isAuthenticated = () => {
   const token = localStorage.getItem('token');
   return !!token;

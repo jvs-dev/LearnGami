@@ -2,21 +2,12 @@
 
 import React, { createContext, useContext, useState, useEffect, ReactNode } from "react";
 import { isAuthenticated as checkAuth } from "./services/authService";
-import { jwtDecode } from "jwt-decode";
+import { api } from "./services/api";
 
-// Define the shape of our user data
 interface User {
   id: number;
   email: string;
   name: string;
-}
-
-// Define the shape of our JWT payload
-interface JwtPayload {
-  id: number;
-  email: string;
-  name: string;
-  exp: number;
 }
 
 interface UserContextType {
@@ -28,30 +19,39 @@ interface UserContextType {
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
 
+const fetchUserData = async (token: string) => {
+  try {
+    const { data, error } = await api.get('/auth/me', token);
+    if (error) {
+      console.error('Failed to fetch user data:', error);
+      return null;
+    }
+    return data.user as User;
+  } catch (e) {
+    console.error('Failed to fetch user data:', e);
+    return null;
+  }
+};
+
 export const UserProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-  useEffect(() => {
-    // Check if user is already authenticated on app load
-    const checkAuthentication = () => {
+  useEffect(() => {    
+    const checkAuthentication = async () => {
       const authStatus = checkAuth();
       setIsAuthenticated(authStatus);
-      
-      // If authenticated, try to get user data from the JWT token
+            
       if (authStatus) {
         const token = localStorage.getItem('token');
         if (token) {
-          try {
-            const decoded: JwtPayload = jwtDecode(token);
-            const userData: User = {
-              id: decoded.id,
-              email: decoded.email,
-              name: decoded.name
-            };
+          const userData = await fetchUserData(token);
+          if (userData) {
             setUser(userData);
-          } catch (e) {
-            console.error('Failed to decode JWT token', e);
+          } else {
+            // If we can't fetch user data, logout the user
+            setIsAuthenticated(false);
+            localStorage.removeItem('token');
           }
         }
       }

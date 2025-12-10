@@ -15,12 +15,13 @@
   height: 4rem;
   padding: 0 1rem;
   max-width: 1200px;
+  margin: 0 auto;
 }
 
 .header__logo {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.7rem;
 }
 
 .header__logo-img {
@@ -92,6 +93,10 @@
   padding: 0.5rem 1rem;
   border-radius: 4px;
   font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 200px;
 }
 
 .header__dropdown-menu {
@@ -140,8 +145,22 @@
   .header__nav-list {
     gap: 1rem;
   }
-
+  
   .header__logo {
     font-size: 1.25rem;
+  }
+  
+  .header__user-dropdown {
+    max-width: 150px;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .header__user-dropdown {
+    max-width: 120px;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.8rem;
   }
 }
