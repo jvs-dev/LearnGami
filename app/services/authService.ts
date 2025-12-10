@@ -4,8 +4,8 @@ export interface User {
   id: number;
   email: string;
   name: string;
+  role: string; // Add role property
 }
-
 
 export interface RegisterResponse {
   message: string;
@@ -13,13 +13,11 @@ export interface RegisterResponse {
   user: User;
 }
 
-
 export interface LoginResponse {
   message: string;
   token: string;
   user: User;
 }
-
 
 export const fetchUserData = async (token: string) => {
   try {
@@ -35,7 +33,6 @@ export const fetchUserData = async (token: string) => {
   }
 };
 
-
 export const register = async (name: string, email: string, password: string) => {
   try {
     const { data, error } = await api.post('/auth/register', { name, email, password });
@@ -43,7 +40,6 @@ export const register = async (name: string, email: string, password: string) =>
     if (error) {
       return { data: null, error };
     }
-
 
     if (data.token) {
       localStorage.setItem('token', data.token);
@@ -55,7 +51,6 @@ export const register = async (name: string, email: string, password: string) =>
     return { data: null, error: errorMessage };
   }
 };
-
 
 export const login = async (email: string, password: string) => {
   try {
@@ -65,7 +60,6 @@ export const login = async (email: string, password: string) => {
       return { data: null, error };
     }
 
-
     if (data.token) {
       localStorage.setItem('token', data.token);
     }
@@ -77,12 +71,10 @@ export const login = async (email: string, password: string) => {
   }
 };
 
-
 export const logout = () => {
   localStorage.removeItem('token');
   localStorage.removeItem('userData');
 };
-
 
 export const isAuthenticated = () => {
   const token = localStorage.getItem('token');

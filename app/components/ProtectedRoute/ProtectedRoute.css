@@ -1,0 +1,12 @@
+.protected-route__loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #141414;
+}
+
+.protected-route__loading p {
+  color: #e0e0e0;
+  font-size: 1.2rem;
+}

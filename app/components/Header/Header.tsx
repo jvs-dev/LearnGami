@@ -63,8 +63,11 @@ const Header: React.FC = () => {
             {isAuthenticated ? (
               <>
                 <li className="header__nav-item">
-                  <Link href="/curso" className="header__nav-link">
-                    Favoritos
+                  <Link 
+                    href={user?.role === "ADMIN" ? "/dashboard" : "/curso"} 
+                    className="header__nav-link"
+                  >
+                    {user?.role === "ADMIN" ? "Dashboard" : "Favoritos"}
                   </Link>
                 </li>
                 <li className="header__nav-item" ref={dropdownRef}>

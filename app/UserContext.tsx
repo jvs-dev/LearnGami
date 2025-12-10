@@ -4,10 +4,12 @@ import React, { createContext, useContext, useState, useEffect, ReactNode } from
 import { isAuthenticated as checkAuth } from "./services/authService";
 import { api } from "./services/api";
 
+// Define the shape of our user data
 interface User {
   id: number;
   email: string;
   name: string;
+  role: string; // Add role property
 }
 
 interface UserContextType {
@@ -19,6 +21,7 @@ interface UserContextType {
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
 
+// Function to fetch user data from the backend
 const fetchUserData = async (token: string) => {
   try {
     const { data, error } = await api.get('/auth/me', token);
@@ -37,11 +40,13 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-  useEffect(() => {    
+  useEffect(() => {
+    // Check if user is already authenticated on app load
     const checkAuthentication = async () => {
       const authStatus = checkAuth();
       setIsAuthenticated(authStatus);
-            
+      
+      // If authenticated, fetch user data from the backend
       if (authStatus) {
         const token = localStorage.getItem('token');
         if (token) {

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import "../app/components/ProtectedRoute/ProtectedRoute.css";
 import { type_second } from "./functions/fonts";
 import Header from "./components/Header/Header";
 import Footer from "./components/Footer/Footer";
