@@ -1,9 +1,11 @@
 "use client";
 
+import React, { useState, useMemo } from "react";
 import CourseList from "./components/CourseList/CourseList";
 import Footer from "./components/Footer/Footer";
 import Header from "./components/Header/Header";
 import "./page.css";
+import 'bootstrap-icons/font/bootstrap-icons.css';
 
 // Mock data
 const mockCourses = [
@@ -40,6 +42,16 @@ const mockCourses = [
 ];
 
 export default function Home() {
+  const [searchTerm, setSearchTerm] = useState("");
+
+  // Filter courses based on search term and active status
+  const filteredCourses = useMemo(() => {
+    return mockCourses.filter(course => 
+      course.status === "active" && 
+      course.title.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+  }, [searchTerm]);
+
   return (
     <>
       <Header />
@@ -55,8 +67,21 @@ export default function Home() {
             </div>
           </section>
 
+          <div className="home__search-container">
+            <div className="home__search-wrapper">
+              <input
+                type="text"
+                placeholder="Pesquisar cursos..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="home__search-input"
+              />
+              <i className="bi bi-search home__search-icon"></i>
+            </div>
+          </div>
+
           <CourseList
-            courses={mockCourses.filter((course) => course.status === "active")}
+            courses={filteredCourses}
             title="Cursos Disponíveis"
           />
         </main>

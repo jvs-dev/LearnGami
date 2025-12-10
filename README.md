@@ -1,6 +1,6 @@
 # Algoritmo Humano Frontend
 
-Frontend application for the Algoritmo Humano challenge built with Next.js.
+Frontend application for the LearnGami challenge built with Next.js.
 
 ## API Integration
 

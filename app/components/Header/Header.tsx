@@ -64,7 +64,7 @@ const Header: React.FC = () => {
               <>
                 <li className="header__nav-item">
                   <Link href="/curso" className="header__nav-link">
-                    Cursos
+                    Favoritos
                   </Link>
                 </li>
                 <li className="header__nav-item" ref={dropdownRef}>

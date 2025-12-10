@@ -120,6 +120,7 @@ body {
 
 .registro__input--password {
   padding: 0.75rem 3rem 0.75rem 0.75rem;
+  border: 1px solid transparent;
   border: none;
   outline-width: 0px;
   background: transparent;
