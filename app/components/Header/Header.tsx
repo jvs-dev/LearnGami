@@ -51,6 +51,7 @@ const Header: React.FC = () => {
             alt="LearnGami"
             className="header__logo-img"
           />
+          <span className="header__logo-text">LearnGami</span>
         </Link>
 
         <nav className="header__nav">

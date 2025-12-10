@@ -14,11 +14,25 @@
   align-items: center;
   height: 4rem;
   padding: 0 1rem;
+  max-width: 1200px;
+}
+
+.header__logo {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
 .header__logo-img {
   width: 2rem;
   height: 2rem;
+}
+
+.header__logo-text {
+  color: #e0e0e0;
+  font-size: 1.7rem;
+  font-weight: 700;
+  font-family: var(--type-second);
 }
 
 .header__nav-list {
@@ -38,7 +52,7 @@
   font-weight: 500;
   transition: color 0.2s ease;
   font-family: var(--type-first);
-  font-size: 1rem;  
+  font-size: 1rem;
 }
 
 .header__nav-link:hover {
@@ -126,7 +140,7 @@
   .header__nav-list {
     gap: 1rem;
   }
-  
+
   .header__logo {
     font-size: 1.25rem;
   }
