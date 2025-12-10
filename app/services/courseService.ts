@@ -1,179 +1,167 @@
-import { api } from './api';
+import { api } from "./api";
 
+const COURSES_ENDPOINT = "/courses";
 
+// Course data interface
 export interface Course {
-  id: number;
+  id?: number;
   title: string;
   description: string;
   duration: number;
   imageUrl?: string;
   status: boolean;
-  createdAt: string;
-  updatedAt: string;
-  userId: number;
+  createdAt?: string;
+  updatedAt?: string;
+  userId?: number;
 }
 
-
-export interface PublicCourse {
-  id: number;
+// Interface for course creation (without id, createdAt, updatedAt, userId)
+export interface CreateCourseData {
   title: string;
   description: string;
   duration: number;
   imageUrl?: string;
-  createdAt: string;
-  user: {
-    name: string;
-  };
+  status?: boolean;
 }
 
-
-export interface CreateCourseResponse {
-  message: string;
-  course: Course;
-}
-
-
-export interface GetCoursesResponse extends Array<Course> { }
-
-
-export interface GetPublicCoursesResponse extends Array<PublicCourse> { }
-
-
-export interface UpdateCourseResponse {
-  message: string;
-  course: Course;
-}
-
-
-export interface DeleteCourseResponse {
-  message: string;
-}
-
-
-const getToken = () => {
-  if (typeof window !== 'undefined') {
-    return localStorage.getItem('token');
-  }
-  return null;
-};
-
-
-export const createCourse = async (courseData: Partial<Course>) => {
-  const token = getToken();
-  if (!token) {
-    return { data: null, error: 'Não autenticado' };
-  }
-
+// Create a new course
+export const createCourse = async (courseData: CreateCourseData): Promise<Course> => {
   try {
-    const { data, error } = await api.post('/courses/', courseData, token);
-
-    if (error) {
-      return { data: null, error };
+    // Get token from localStorage (using the correct key from authService)
+    const token = localStorage.getItem('token');
+    
+    if (!token) {
+      throw new Error("Token não fornecido");
     }
 
-    return { data, error: null };
+    const { data, error } = await api.post(COURSES_ENDPOINT, courseData, token);
+    
+    if (error) {
+      throw new Error(error);
+    }
+    
+    return data.course;
   } catch (error) {
-    const errorMessage = error instanceof Error ? error.message : 'Erro desconhecido';
-    return { data: null, error: errorMessage };
+    if (error instanceof Error) {
+      throw error;
+    }
+    throw new Error("Failed to create course");
   }
 };
 
-
-export const getCourses = async () => {
-  const token = getToken();
-  if (!token) {
-    return { data: null, error: 'Não autenticado' };
-  }
-
+// Get all courses for the authenticated user
+export const getUserCourses = async (): Promise<Course[]> => {
   try {
-    const { data, error } = await api.get('/courses/', token);
-
-    if (error) {
-      return { data: null, error };
+    // Get token from localStorage (using the correct key from authService)
+    const token = localStorage.getItem('token');
+    
+    if (!token) {
+      throw new Error("Token não fornecido");
     }
 
-    return { data, error: null };
+    const { data, error } = await api.get(COURSES_ENDPOINT, token);
+    
+    if (error) {
+      throw new Error(error);
+    }
+    
+    return data;
   } catch (error) {
-    const errorMessage = error instanceof Error ? error.message : 'Erro desconhecido';
-    return { data: null, error: errorMessage };
+    if (error instanceof Error) {
+      throw error;
+    }
+    throw new Error("Failed to fetch courses");
   }
 };
 
-
-export const getCourseById = async (id: number) => {
-  const token = getToken();
-  if (!token) {
-    return { data: null, error: 'Não autenticado' };
-  }
-
+// Get a specific course by ID
+export const getCourseById = async (id: number): Promise<Course> => {
   try {
-    const { data, error } = await api.get(`/courses/${id}`, token);
-
-    if (error) {
-      return { data: null, error };
+    // Get token from localStorage (using the correct key from authService)
+    const token = localStorage.getItem('token');
+    
+    if (!token) {
+      throw new Error("Token não fornecido");
     }
 
-    return { data, error: null };
+    const { data, error } = await api.get(`${COURSES_ENDPOINT}/${id}`, token);
+    
+    if (error) {
+      throw new Error(error);
+    }
+    
+    return data;
   } catch (error) {
-    const errorMessage = error instanceof Error ? error.message : 'Erro desconhecido';
-    return { data: null, error: errorMessage };
+    if (error instanceof Error) {
+      throw error;
+    }
+    throw new Error("Failed to fetch course");
   }
 };
 
-
-export const updateCourse = async (id: number, courseData: Partial<Course>) => {
-  const token = getToken();
-  if (!token) {
-    return { data: null, error: 'Não autenticado' };
-  }
-
+// Update a course
+export const updateCourse = async (id: number, courseData: Partial<CreateCourseData>): Promise<Course> => {
   try {
-    const { data, error } = await api.put(`/courses/${id}`, courseData, token);
-
-    if (error) {
-      return { data: null, error };
+    // Get token from localStorage (using the correct key from authService)
+    const token = localStorage.getItem('token');
+    
+    if (!token) {
+      throw new Error("Token não fornecido");
     }
 
-    return { data, error: null };
+    const { data, error } = await api.put(`${COURSES_ENDPOINT}/${id}`, courseData, token);
+    
+    if (error) {
+      throw new Error(error);
+    }
+    
+    return data.course;
   } catch (error) {
-    const errorMessage = error instanceof Error ? error.message : 'Erro desconhecido';
-    return { data: null, error: errorMessage };
+    if (error instanceof Error) {
+      throw error;
+    }
+    throw new Error("Failed to update course");
   }
 };
 
-
-export const deleteCourse = async (id: number) => {
-  const token = getToken();
-  if (!token) {
-    return { data: null, error: 'Não autenticado' };
-  }
-
+// Delete a course
+export const deleteCourse = async (id: number): Promise<void> => {
   try {
-    const { data, error } = await api.delete(`/courses/${id}`, token);
-
-    if (error) {
-      return { data: null, error };
+    // Get token from localStorage (using the correct key from authService)
+    const token = localStorage.getItem('token');
+    
+    if (!token) {
+      throw new Error("Token não fornecido");
     }
 
-    return { data, error: null };
+    const { data, error } = await api.delete(`${COURSES_ENDPOINT}/${id}`, token);
+    
+    if (error) {
+      throw new Error(error);
+    }
   } catch (error) {
-    const errorMessage = error instanceof Error ? error.message : 'Erro desconhecido';
-    return { data: null, error: errorMessage };
+    if (error instanceof Error) {
+      throw error;
+    }
+    throw new Error("Failed to delete course");
   }
 };
 
-
-export const getPublicCourses = async () => {
+// Get public courses
+export const getPublicCourses = async (): Promise<Course[]> => {
   try {
-    const { data, error } = await api.get('/courses/public');
-
+    // Public endpoint doesn't require authentication
+    const { data, error } = await api.get(`${COURSES_ENDPOINT}/public`);
+    
     if (error) {
-      return { data: null, error };
+      throw new Error(error);
     }
-
-    return { data, error: null };
+    
+    return data;
   } catch (error) {
-    const errorMessage = error instanceof Error ? error.message : 'Erro desconhecido';
-    return { data: null, error: errorMessage };
+    if (error instanceof Error) {
+      throw error;
+    }
+    throw new Error("Failed to fetch public courses");
   }
 };

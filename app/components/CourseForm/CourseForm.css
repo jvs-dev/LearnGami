@@ -1,0 +1,98 @@
+.course-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.course-form__group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.course-form__label {
+  font-weight: 500;
+  color: #e0e0e0;
+}
+
+.course-form__input,
+.course-form__textarea,
+.course-form__select {
+  font-family: var(--type-third);
+  padding: 0.75rem;
+  border: 1px solid #444444;
+  outline-width: 0px;
+  border-radius: 0.375rem;
+  font-size: 1rem;
+  font-weight: 500;
+  transition: border-color 0.2s ease;
+  background-color: #3d3d3d;
+  color: #e0e0e0;
+  width: 100%;
+}
+
+.course-form__input:focus,
+.course-form__textarea:focus,
+.course-form__select:focus {
+  outline: none;
+  border-color: var(--primary-color);
+}
+
+.course-form__input::placeholder,
+.course-form__textarea::placeholder {
+  color: #e0e0e0;
+  opacity: 0.5;
+}
+
+.course-form__textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+.course-form__actions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.course-form__button {
+  font-family: var(--type-third);
+  font-size: 1rem;
+  font-weight: 600;
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 0.375rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  flex: 1;
+}
+
+.course-form__button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.course-form__button--cancel {
+  background-color: #444444;
+  color: #e0e0e0;
+}
+
+.course-form__button--cancel:hover:not(:disabled) {
+  background-color: #555555;
+}
+
+.course-form__button--submit {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+.course-form__button--submit:hover:not(:disabled) {
+  background-color: #0277e0;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+  .course-form__actions {
+    flex-direction: column;
+  }
+}
