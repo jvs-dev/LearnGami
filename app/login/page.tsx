@@ -4,17 +4,48 @@ import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import "./login.css";
 import Header from "../components/Header/Header";
+import { login } from "../services/authService";
+import { useUser } from "../UserContext"; // Import useUser hook
+import 'bootstrap-icons/font/bootstrap-icons.css'; // Import bootstrap-icons CSS
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false); // State for password visibility
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
   const router = useRouter();
+  const { login: loginUser } = useUser(); // Get login function from context
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    setLoading(true);
+    setError("");
+
+    try {
+      const { data, error: apiError } = await login(email, password);
+      
+      if (apiError) {
+        setError(apiError);
+        setLoading(false);
+        return;
+      }
+
+      // Set user data in context after successful login
+      if (data && data.user) {
+        loginUser(data.user);
+      }
+
+      // Login successful, redirect to home page
+      router.push("/"); // Redirect to home page after successful login
+    } catch (err) {
+      setError("Erro ao fazer login. Tente novamente.");
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -30,7 +61,7 @@ export default function LoginPage() {
             <h1 className="login__logo-title">LearnGami</h1>
           </div>
           <div className="login__card">
-            <h1 className="login__title">Entrar</h1>
+            <h1 className="login__title title">Entrar</h1>
 
             <form onSubmit={handleSubmit} className="login__form">
               <div className="login__form-group">
@@ -52,15 +83,25 @@ export default function LoginPage() {
                 <label htmlFor="password" className="login__label">
                   Senha
                 </label>
-                <input
-                  id="password"
-                  type="password"
-                  placeholder="Digite sua senha"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  className="login__input"
-                  required
-                />
+                <div className="login__password-container">
+                  <input
+                    id="password"
+                    type={showPassword ? "text" : "password"}
+                    placeholder="Digite sua senha"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    className="login__input login__input--password"
+                    required
+                  />
+                  <button
+                    type="button"
+                    className="login__password-toggle"
+                    onClick={() => setShowPassword(!showPassword)}
+                    aria-label={showPassword ? "Ocultar senha" : "Mostrar senha"}
+                  >
+                    <i className={showPassword ? "bi bi-eye-slash" : "bi bi-eye"}></i>
+                  </button>
+                </div>
               </div>
 
               {error && <div className="login__error">{error}</div>}

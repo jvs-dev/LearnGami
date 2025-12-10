@@ -5,7 +5,7 @@ import Footer from "./components/Footer/Footer";
 import Header from "./components/Header/Header";
 import "./page.css";
 
-// Mock data for demonstration
+// Mock data
 const mockCourses = [
   {
     id: "1",
@@ -15,7 +15,7 @@ const mockCourses = [
     duration: "3 Minutos",
     imageUrl: "https://images.pexels.com/photos/1272837/pexels-photo-1272837.jpeg",    
     status: "active" as const,
-    createdAt: new Date().toISOString() // Setting to current date to show as "Novo"
+    createdAt: new Date().toISOString()
   },
   {
     id: "2",
@@ -25,7 +25,7 @@ const mockCourses = [
     duration: "2 Minutos",
     imageUrl: "https://images.pexels.com/photos/114977/pexels-photo-114977.jpeg",
     status: "active" as const,
-    createdAt: "2023-05-16T14:45:00Z" // Adding creation date
+    createdAt: "2023-05-16T14:45:00Z"
   },
   {
     id: "3",
@@ -35,7 +35,7 @@ const mockCourses = [
     duration: "1 Minuto",
     imageUrl: "https://images.pexels.com/photos/1840756/pexels-photo-1840756.jpeg",
     status: "inactive" as const,
-    createdAt: "2023-05-17T09:15:00Z" // Adding creation date
+    createdAt: "2023-05-17T09:15:00Z"
   },
 ];
 

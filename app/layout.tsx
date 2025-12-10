@@ -3,6 +3,7 @@ import "./globals.css";
 import { type_second } from "./functions/fonts";
 import Header from "./components/Header/Header";
 import Footer from "./components/Footer/Footer";
+import { UserProvider } from "./UserContext";
 
 export const metadata: Metadata = {
   title: "CourseManager - Sistema de Gestão de Cursos",
@@ -18,8 +19,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="pt-BR">
-      <body className={type_second.variable}>        
-        <div className="app__container">{children}</div>        
+      <body className={type_second.variable}>
+        <UserProvider>
+          <div className="app__container">{children}</div>
+        </UserProvider>
       </body>
     </html>
   );

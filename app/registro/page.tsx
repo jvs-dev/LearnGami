@@ -3,16 +3,22 @@
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import "./registro.css";
+import { register } from "../services/authService";
+import { useUser } from "../UserContext"; // Import useUser hook
+import 'bootstrap-icons/font/bootstrap-icons.css'; // Import bootstrap-icons CSS
 
 export default function RegistroPage() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false); // State for password visibility
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false); // State for confirm password visibility
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
   const router = useRouter();
+  const { login: loginUser } = useUser(); // Get login function from context
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -20,6 +26,32 @@ export default function RegistroPage() {
     if (password !== confirmPassword) {
       setError("As senhas não coincidem");
       return;
+    }
+
+    setLoading(true);
+    setError("");
+
+    try {
+      const { data, error: apiError } = await register(name, email, password);
+      
+      if (apiError) {
+        setError(apiError);
+        setLoading(false);
+        return;
+      }
+
+      // Set user data in context after successful registration
+      if (data && data.user) {
+        loginUser(data.user);
+      }
+
+      // Registration successful, redirect to home page
+      router.push("/"); // Redirect to home page after successful registration
+    } catch (err) {
+      setError("Erro ao registrar usuário. Tente novamente.");
+      console.error(err);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -35,7 +67,7 @@ export default function RegistroPage() {
           <h1 className="registro__logo-title">LearnGami</h1>
         </div>
         <div className="registro__card">
-          <h1 className="registro__title">Cadastre-se</h1>
+          <h1 className="registro__title title">Cadastre-se</h1>
 
           <form onSubmit={handleSubmit} className="registro__form">
             <div className="registro__form-group">
@@ -72,30 +104,50 @@ export default function RegistroPage() {
               <label htmlFor="password" className="registro__label">
                 Senha
               </label>
-              <input
-                id="password"
-                type="password"
-                placeholder="Digite sua senha"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="registro__input"
-                required
-              />
+              <div className="registro__password-container">
+                <input
+                  id="password"
+                  type={showPassword ? "text" : "password"}
+                  placeholder="Digite sua senha"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className="registro__input registro__input--password"
+                  required
+                />
+                <button
+                  type="button"
+                  className="registro__password-toggle"
+                  onClick={() => setShowPassword(!showPassword)}
+                  aria-label={showPassword ? "Ocultar senha" : "Mostrar senha"}
+                >
+                  <i className={showPassword ? "bi bi-eye-slash" : "bi bi-eye"}></i>
+                </button>
+              </div>
             </div>
 
             <div className="registro__form-group">
               <label htmlFor="confirmPassword" className="registro__label">
                 Confirmar Senha
               </label>
-              <input
-                id="confirmPassword"
-                type="password"
-                placeholder="Confirme sua senha"
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-                className="registro__input"
-                required
-              />
+              <div className="registro__password-container">
+                <input
+                  id="confirmPassword"
+                  type={showConfirmPassword ? "text" : "password"}
+                  placeholder="Confirme sua senha"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  className="registro__input registro__input--password"
+                  required
+                />
+                <button
+                  type="button"
+                  className="registro__password-toggle"
+                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                  aria-label={showConfirmPassword ? "Ocultar senha" : "Mostrar senha"}
+                >
+                  <i className={showConfirmPassword ? "bi bi-eye-slash" : "bi bi-eye"}></i>
+                </button>
+              </div>
             </div>
 
             {error && <div className="registro__error">{error}</div>}

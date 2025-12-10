@@ -1,38 +1,40 @@
-## 🎯 Objetivo do Projeto
+# Algoritmo Humano Frontend
 
-Este projeto faz parte de um desafio técnico para um processo seletivo, com o objetivo de desenvolver uma aplicação web full stack utilizando **Next.js** no frontend e **Node.js** no backend. A aplicação consiste em um sistema simples de gestão de cursos, com autenticação de usuários e funcionalidades completas de CRUD.
+Frontend application for the Algoritmo Humano challenge built with Next.js.
 
----
+## API Integration
 
-## 💡 Sobre o Desafio
+The frontend is connected to the backend API running on `http://localhost:3001/api`.
 
-O desafio proposto envolve:
+### Authentication
 
-- **Autenticação de Usuários**: com cadastro, login e uso de JWT.
-- **Gestão de Cursos**: criar, listar, editar e excluir cursos (acesso restrito).
-- **Catálogo Público**: página aberta listando cursos ativos.
-- **Boas Práticas**: organização de código, componentização, responsividade e documentação clara.
+- **Register**: `POST /auth/register`
+- **Login**: `POST /auth/login`
 
-Além disso, o projeto será avaliado por:
+### Courses
 
-- Estrutura e clareza do frontend e backend
-- Integração entre as partes
-- Qualidade visual e experiência do usuário
-- Organização do repositório e histórico de commits
-- (Opcional) Uso de diferenciais como testes, paginação, filtros e deploy
+- **Create Course**: `POST /courses/` (authenticated)
+- **Get All Courses**: `GET /courses/` (authenticated)
+- **Get Course by ID**: `GET /courses/:id` (authenticated)
+- **Update Course**: `PUT /courses/:id` (authenticated)
+- **Delete Course**: `DELETE /courses/:id` (authenticated)
+- **Get Public Courses**: `GET /courses/public` (no authentication required)
 
----
+## Services
 
-## 🧩 Tecnologias Utilizadas
+The application uses service files to communicate with the backend:
 
-- **Frontend**: Next.js, TypeScript, TailwindCSS (ou styled-components)
-- **Backend**: Node.js, Express, Prisma (ou outro ORM)
-- **Autenticação**: JWT
-- **Banco de Dados**: PostgreSQL / SQLite / MySQL
-- **Deploy** (opcional): Vercel / Render / Railway
+1. `api.ts` - Generic API request handler
+2. `authService.ts` - Authentication related functions (register, login, logout)
+3. `courseService.ts` - Course related functions (create, read, update, delete)
 
----
+## Authentication Flow
 
-## ▶️ Como Rodar o Projeto
+1. User registers or logs in through the respective forms
+2. Upon successful authentication, a JWT token is received and stored in localStorage
+3. The token is automatically included in the Authorization header for all subsequent authenticated requests
+4. User context is managed through React Context API to maintain authentication state across the application
 
-Instruções detalhadas de instalação e execução estarão disponíveis nos respectivos repositórios do frontend e backend.
+## Local Storage
+
+- `token` - JWT token for authenticated requests
