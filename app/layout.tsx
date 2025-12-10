@@ -19,7 +19,7 @@ export default function RootLayout({
   return (
     <html lang="pt-BR">
       <body className={type_second.variable}>        
-        <div className="app__body">{children}</div>        
+        <div className="app__container">{children}</div>        
       </body>
     </html>
   );

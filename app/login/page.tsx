@@ -19,56 +19,76 @@ export default function LoginPage() {
 
   return (
     <>
-      <Header />
-      <div className="login-page">
-        <div className="login-container">
-          <div className="login-card">
-            <h1 className="login-title">Entrar</h1>
+      <div className="login">
+        <div className="login__container">
+          <div className="login__logo-container">
+            <img
+              src="./favicon.svg"
+              alt="LearnGami Logo"
+              className="login__logo"
+            />
+            <h1 className="login__logo-title">LearnGami</h1>
+          </div>
+          <div className="login__card">
+            <h1 className="login__title">Entrar</h1>
 
-            <form onSubmit={handleSubmit} className="login-form">
-              <div className="form-group">
-                <label htmlFor="email" className="form-label">
+            <form onSubmit={handleSubmit} className="login__form">
+              <div className="login__form-group">
+                <label htmlFor="email" className="login__label">
                   Email
                 </label>
                 <input
                   id="email"
                   type="email"
+                  placeholder="Digite seu email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="form-input"
+                  className="login__input"
                   required
                 />
               </div>
 
-              <div className="form-group">
-                <label htmlFor="password" className="form-label">
+              <div className="login__form-group">
+                <label htmlFor="password" className="login__label">
                   Senha
                 </label>
                 <input
                   id="password"
                   type="password"
+                  placeholder="Digite sua senha"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="form-input"
+                  className="login__input"
                   required
                 />
               </div>
 
-              {error && <div className="form-error">{error}</div>}
+              {error && <div className="login__error">{error}</div>}
 
-              <button type="submit" className="login-button" disabled={loading}>
+              <button
+                type="submit"
+                className="login__button"
+                disabled={loading}
+              >
                 {loading ? "Entrando..." : "Entrar"}
               </button>
             </form>
 
-            <div className="login-footer">
+            <div className="login__footer">
               <p>
                 Não tem uma conta?{" "}
-                <a href="/registro" className="login-link">
+                <a href="/registro" className="login__link">
                   Registre-se
                 </a>
               </p>
             </div>
+          </div>
+          <div className="login__image-container">
+            <img
+              src="https://images.pexels.com/photos/700413/pexels-photo-700413.jpeg"
+              alt="Login illustration"
+              className="login__image"
+            />
           </div>
         </div>
       </div>

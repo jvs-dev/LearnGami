@@ -11,7 +11,7 @@ body {
   --type-second: var(--font-spectral), Georgia;
   --type-third: var(--font-poppins), sans-serif;
   font-family: var(--type-first);
-  --primary-color: #0285ff;
+  --primary-color: #564aff;
 }
 
 h1,
@@ -72,7 +72,7 @@ a {
   display: block;
   width: 1.5rem;
   height: 1.5rem;
-  background: rgb(14, 239, 255);
+  background: var(--primary-color);
   position: absolute;
   bottom: 5px;
   left: -5px;

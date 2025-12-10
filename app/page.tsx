@@ -43,13 +43,13 @@ export default function Home() {
   return (
     <>
       <Header />
-      <div className="app">
-        <main className="main">
-          <section className="hero">
-            <div className="hero__container container">
-              <h1 className="hero__title">Bem-vindo ao LearnGami</h1>
-              <p className="hero__subtitle">O melhor do origami esta aqui</p>
-              <a href="#cursos" className="hero__button">
+      <div className="home">
+        <main className="home__main">
+          <section className="home__hero">
+            <div className="home__hero-container container">
+              <h1 className="home__hero-title">Bem-vindo ao LearnGami</h1>
+              <p className="home__hero-subtitle">O melhor do origami esta aqui</p>
+              <a href="#cursos" className="home__hero-button">
                 Ver Cursos
               </a>
             </div>

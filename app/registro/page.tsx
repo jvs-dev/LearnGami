@@ -3,7 +3,6 @@
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import "./registro.css";
-import Header from "../components/Header/Header";
 
 export default function RegistroPage() {
   const [name, setName] = useState("");
@@ -25,92 +24,108 @@ export default function RegistroPage() {
   };
 
   return (
-    <>
-      <Header />
-      <div className="registro-page">
-        <div className="registro-container">
-          <div className="registro-card">
-            <h1 className="registro-title">Registrar</h1>
+    <div className="registro">
+      <div className="registro__container">
+        <div className="registro__logo-container">
+          <img
+            src="./favicon.svg"
+            alt="LearnGami Logo"
+            className="registro__logo"
+          />
+          <h1 className="registro__logo-title">LearnGami</h1>
+        </div>
+        <div className="registro__card">
+          <h1 className="registro__title">Cadastre-se</h1>
 
-            <form onSubmit={handleSubmit} className="registro-form">
-              <div className="form-group">
-                <label htmlFor="name" className="form-label">
-                  Nome
-                </label>
-                <input
-                  id="name"
-                  type="text"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  className="form-input"
-                  required
-                />
-              </div>
-
-              <div className="form-group">
-                <label htmlFor="email" className="form-label">
-                  Email
-                </label>
-                <input
-                  id="email"
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="form-input"
-                  required
-                />
-              </div>
-
-              <div className="form-group">
-                <label htmlFor="password" className="form-label">
-                  Senha
-                </label>
-                <input
-                  id="password"
-                  type="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  className="form-input"
-                  required
-                />
-              </div>
-
-              <div className="form-group">
-                <label htmlFor="confirmPassword" className="form-label">
-                  Confirmar Senha
-                </label>
-                <input
-                  id="confirmPassword"
-                  type="password"
-                  value={confirmPassword}
-                  onChange={(e) => setConfirmPassword(e.target.value)}
-                  className="form-input"
-                  required
-                />
-              </div>
-
-              {error && <div className="form-error">{error}</div>}
-
-              <button
-                type="submit"
-                className="registro-button"
-                disabled={loading}
-              >
-                {loading ? "Registrando..." : "Registrar"}
-              </button>
-            </form>
-
-            <div className="registro-footer">
-              <p>
-                Já tem uma conta?
-                <a href="/login" className="registro-link">
-                  Entrar
-                </a>
-              </p>
+          <form onSubmit={handleSubmit} className="registro__form">
+            <div className="registro__form-group">
+              <label htmlFor="name" className="registro__label">
+                Nome
+              </label>
+              <input
+                id="name"
+                type="text"
+                placeholder="Digite seu nome"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                className="registro__input"
+                required
+              />
             </div>
+
+            <div className="registro__form-group">
+              <label htmlFor="email" className="registro__label">
+                Email
+              </label>
+              <input
+                id="email"
+                type="email"
+                placeholder="Digite seu email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="registro__input"
+                required
+              />
+            </div>
+
+            <div className="registro__form-group">
+              <label htmlFor="password" className="registro__label">
+                Senha
+              </label>
+              <input
+                id="password"
+                type="password"
+                placeholder="Digite sua senha"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="registro__input"
+                required
+              />
+            </div>
+
+            <div className="registro__form-group">
+              <label htmlFor="confirmPassword" className="registro__label">
+                Confirmar Senha
+              </label>
+              <input
+                id="confirmPassword"
+                type="password"
+                placeholder="Confirme sua senha"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                className="registro__input"
+                required
+              />
+            </div>
+
+            {error && <div className="registro__error">{error}</div>}
+
+            <button
+              type="submit"
+              className="registro__button"
+              disabled={loading}
+            >
+              {loading ? "Registrando..." : "Cadastre-se"}
+            </button>
+          </form>
+
+          <div className="registro__footer">
+            <p>
+              Já tem uma conta?{" "}
+              <a href="/login" className="registro__link">
+                Entrar
+              </a>
+            </p>
           </div>
         </div>
+        <div className="registro__image-container">
+          <img
+            src="https://images.pexels.com/photos/700413/pexels-photo-700413.jpeg"
+            alt="Registro illustration"
+            className="registro__image"
+          />
+        </div>
       </div>
-    </>
+    </div>
   );
 }
