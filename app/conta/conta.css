@@ -1,0 +1,107 @@
+.account {
+  padding: 2rem 1rem;
+  min-height: calc(100vh - 200px);
+}
+
+.account__container {
+  max-width: 800px;
+  margin: 0 auto;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  padding: 2rem;
+}
+
+.account__title {
+  font-size: 2rem;
+  margin-bottom: 2rem;
+  color: #333;
+  text-align: center;
+}
+
+.account__info {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.account__field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.account__label {
+  font-weight: bold;
+  color: #555;
+}
+
+.account__value {
+  padding: 0.75rem;
+  background-color: #f8f9fa;
+  border-radius: 4px;
+  border: 1px solid #e9ecef;
+}
+
+.account__input {
+  padding: 0.75rem;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  font-size: 1rem;
+}
+
+.account__input:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+.account__actions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+  justify-content: flex-end;
+}
+
+.account__button {
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 4px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.account__button--edit {
+  background-color: #007bff;
+  color: white;
+}
+
+.account__button--edit:hover {
+  background-color: #0069d9;
+}
+
+.account__button--save {
+  background-color: #28a745;
+  color: white;
+}
+
+.account__button--save:hover {
+  background-color: #218838;
+}
+
+.account__button--cancel {
+  background-color: #6c757d;
+  color: white;
+}
+
+.account__button--cancel:hover {
+  background-color: #5a6268;
+}
+
+.account__error {
+  text-align: center;
+  color: #dc3545;
+  font-size: 1.2rem;
+  padding: 2rem;
+}

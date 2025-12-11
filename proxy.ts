@@ -19,7 +19,7 @@ function parseJwt(token: string) {
    }
 }
 
-export function middleware(request: NextRequest) {
+export function proxy(request: NextRequest) {
    const { pathname } = request.nextUrl;
 
    const isProtectedRoute = protectedRoutes.some(route => pathname.startsWith(route));
@@ -38,7 +38,7 @@ export function middleware(request: NextRequest) {
       }
 
       if (!token) {
-         console.log(`[Middleware] Sem token acessando ${pathname}. Redirecionando para login.`);
+         console.log(`[Proxy] Sem token acessando ${pathname}. Redirecionando para login.`);
          const url = new URL('/login', request.url);
          return NextResponse.redirect(url);
       }
@@ -46,14 +46,14 @@ export function middleware(request: NextRequest) {
       const payload = parseJwt(token);
 
       if (!payload) {
-         console.log(`[Middleware] Token inválido acessando ${pathname}.`);
+         console.log(`[Proxy] Token inválido acessando ${pathname}.`);
          const url = new URL('/login', request.url);
          return NextResponse.redirect(url);
       }
 
       const currentTime = Math.floor(Date.now() / 1000);
       if (payload.exp && payload.exp < currentTime) {
-         console.log(`[Middleware] Token expirado.`);
+         console.log(`[Proxy] Token expirado.`);
          const url = new URL('/login', request.url);
          return NextResponse.redirect(url);
       }
@@ -64,7 +64,7 @@ export function middleware(request: NextRequest) {
          console.log("Role detectada:", role);
 
          if (role !== 'ADMIN') {
-            console.log(`[Middleware] Acesso negado. Role '${role}' não é ADMIN. Redirecionando.`);
+            console.log(`[Proxy] Acesso negado. Role '${role}' não é ADMIN. Redirecionando.`);
             const url = new URL('/', request.url);
             return NextResponse.redirect(url);
          }

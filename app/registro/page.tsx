@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { register, fetchUserData } from "../services/authService";
 import { useUser } from "../UserContext";
 import { isValidEmail } from "../utils/validators";
@@ -21,10 +21,18 @@ export default function RegistroPage() {
   const [loading, setLoading] = useState(false);
 
   const router = useRouter();
-  const searchParams = useSearchParams();
   const { login: loginUser } = useUser();
 
-  const redirectUrl = searchParams.get('redirect') || '/';
+  // Get redirect URL from window location (client-side only)
+  const getRedirectUrl = () => {
+    if (typeof window !== 'undefined') {
+      const urlParams = new URLSearchParams(window.location.search);
+      return urlParams.get('redirect') || '/';
+    }
+    return '/';
+  };
+
+  const redirectUrl = getRedirectUrl();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
