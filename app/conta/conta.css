@@ -22,14 +22,12 @@
 .account__avatar {
    width: 100px;
    height: 100px;
-   background: linear-gradient(135deg, #564aff 0%, #3a2fd1 100%);
+   background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary) 100%);
    border-radius: 50%;
    display: flex;
    align-items: center;
    justify-content: center;
    margin: 0 auto 1.5rem;
-   box-shadow: 0 5px 15px rgba(86, 74, 255, 0.3);
-   border: 3px solid #2d2d5d;
 }
 
 .account__avatar i {
