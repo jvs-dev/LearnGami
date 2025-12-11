@@ -142,6 +142,9 @@
 
 /* Responsive styles */
 @media (max-width: 768px) {
+  .header__container {
+    height: 4rem;
+  }
   .header__nav-list {
     gap: 1rem;
   }
@@ -154,6 +157,9 @@
     max-width: 150px;
     padding: 0.5rem 0.75rem;
     font-size: 0.9rem;
+  }
+  .header__logo-text {
+    display: none;
   }
 }
 

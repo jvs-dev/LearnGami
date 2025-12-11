@@ -33,6 +33,30 @@ export const fetchUserData = async (token: string) => {
   }
 };
 
+export const fetchUserCount = async () => {
+  try {
+    // Get token from localStorage
+    const token = localStorage.getItem('token');
+    
+    if (!token) {
+      throw new Error("Token não fornecido");
+    }
+
+    const { data, error } = await api.get('/auth/count', token);
+    
+    if (error) {
+      throw new Error(error);
+    }
+    
+    return data.count as number;
+  } catch (error) {
+    if (error instanceof Error) {
+      throw error;
+    }
+    throw new Error("Failed to fetch user count");
+  }
+};
+
 export const register = async (name: string, email: string, password: string) => {
   try {
     const { data, error } = await api.post('/auth/register', { name, email, password });
