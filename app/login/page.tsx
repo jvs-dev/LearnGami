@@ -3,10 +3,10 @@
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import "./login.css";
-import Header from "../components/Header/Header";
 import { login, fetchUserData } from "../services/authService";
 import { useUser } from "../UserContext";
 import "bootstrap-icons/font/bootstrap-icons.css";
+import { isValidEmail } from "../utils/validators";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -24,6 +24,12 @@ export default function LoginPage() {
     setLoading(true);
     setError("");
 
+    if (!isValidEmail(email)) {
+      setError("Por favor, insira um endereço de email válido.");
+      setLoading(false);
+      return;
+    }
+
     try {
       const { data, error: apiError } = await login(email, password);
 
@@ -34,7 +40,7 @@ export default function LoginPage() {
       }
 
       if (data && data.token) {
-        const userData = await fetchUserData(data.token);        
+        const userData = await fetchUserData(data.token);
         if (userData) {
           loginUser(userData);
           router.push("/");
@@ -78,7 +84,6 @@ export default function LoginPage() {
                   required
                 />
               </div>
-
               <div className="login__form-group">
                 <label htmlFor="password" className="login__label">
                   Senha

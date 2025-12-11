@@ -6,6 +6,7 @@ import "./registro.css";
 import { register, fetchUserData } from "../services/authService";
 import { useUser } from "../UserContext";
 import "bootstrap-icons/font/bootstrap-icons.css";
+import { isValidEmail } from "../utils/validators";
 
 export default function RegistroPage() {
   const [name, setName] = useState("");
@@ -22,6 +23,11 @@ export default function RegistroPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (!isValidEmail(email)) {
+      setError("Por favor, insira um endereço de email válido.");
+      return;
+    }
 
     if (password !== confirmPassword) {
       setError("As senhas não coincidem");
