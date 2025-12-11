@@ -23,6 +23,8 @@ export default function Home() {
   const [courses, setCourses] = useState<Course[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const coursesPerPage = 6;
 
   useEffect(() => {
     const fetchCourses = async () => {
@@ -57,6 +59,100 @@ export default function Home() {
       course.title.toLowerCase().includes(searchTerm.toLowerCase())
     );
   }, [searchTerm, courses]);
+
+  // Pagination calculations
+  const totalPages = Math.ceil(filteredCourses.length / coursesPerPage);
+  const startIndex = (currentPage - 1) * coursesPerPage;
+  const currentCourses = filteredCourses.slice(startIndex, startIndex + coursesPerPage);
+
+  const goToPage = (page: number) => {
+    setCurrentPage(page);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const nextPage = () => {
+    if (currentPage < totalPages) {
+      goToPage(currentPage + 1);
+    }
+  };
+
+  const prevPage = () => {
+    if (currentPage > 1) {
+      goToPage(currentPage - 1);
+    }
+  };
+  
+  const renderPagination = () => {
+    if (totalPages <= 1) return null;
+
+    const pageNumbers = [];
+    const maxVisiblePages = 5;
+    
+    let startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
+    let endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
+    
+    if (endPage - startPage + 1 < maxVisiblePages) {
+      startPage = Math.max(1, endPage - maxVisiblePages + 1);
+    }
+
+    for (let i = startPage; i <= endPage; i++) {
+      pageNumbers.push(i);
+    }
+
+    return (
+      <div className="home__pagination">
+        <button 
+          className="home__pagination-button"
+          onClick={prevPage}
+          disabled={currentPage === 1}
+        >
+          <i className="bi bi-chevron-left"></i>
+        </button>
+        
+        {startPage > 1 && (
+          <>
+            <button 
+              className={`home__pagination-number ${currentPage === 1 ? 'home__pagination-number--active' : ''}`}
+              onClick={() => goToPage(1)}
+            >
+              1
+            </button>
+            {startPage > 2 && <span className="home__pagination-ellipsis">...</span>}
+          </>
+        )}
+        
+        {pageNumbers.map(number => (
+          <button
+            key={number}
+            className={`home__pagination-number ${currentPage === number ? 'home__pagination-number--active' : ''}`}
+            onClick={() => goToPage(number)}
+          >
+            {number}
+          </button>
+        ))}
+        
+        {endPage < totalPages && (
+          <>
+            {endPage < totalPages - 1 && <span className="home__pagination-ellipsis">...</span>}
+            <button 
+              className={`home__pagination-number ${currentPage === totalPages ? 'home__pagination-number--active' : ''}`}
+              onClick={() => goToPage(totalPages)}
+            >
+              {totalPages}
+            </button>
+          </>
+        )}
+        
+        <button 
+          className="home__pagination-button"
+          onClick={nextPage}
+          disabled={currentPage === totalPages}
+        >
+          <i className="bi bi-chevron-right"></i>
+        </button>
+      </div>
+    );
+  };
 
   if (loading) {
     return (
@@ -165,9 +261,11 @@ export default function Home() {
           </div>
 
           <CourseList
-            courses={filteredCourses}
-            title="Cursos Disponíveis"
+            courses={currentCourses}
+            title={`Cursos Disponíveis (${filteredCourses.length})`}
           />
+          
+          {renderPagination()}
         </main>
       </div>
       <Footer />
