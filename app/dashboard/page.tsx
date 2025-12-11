@@ -433,18 +433,26 @@ export default function DashboardPage() {
                 ) : (
                   <>
                     <div className="dashboard__courses-grid">
-                      {currentCourses.map((course) => (
-                        <CourseCard
-                          key={course.id}
-                          course={course}
-                          variant="admin"
-                          onEdit={(c) => {
-                            setCurrentEditingCourse(c);
-                            setIsEditCourseModalOpen(true);
-                          }}
-                          onDelete={handleDeleteCourse}
-                        />
-                      ))}
+                      {currentCourses.map((course) => {
+                        // Transform the course data to ensure duration is formatted properly
+                        const transformedCourse = {
+                          ...course,
+                          duration: `${course.duration} minutos`,
+                        };
+
+                        return (
+                          <CourseCard
+                            key={course.id}
+                            course={transformedCourse}
+                            variant="admin"
+                            onEdit={(c) => {
+                              setCurrentEditingCourse(c);
+                              setIsEditCourseModalOpen(true);
+                            }}
+                            onDelete={handleDeleteCourse}
+                          />
+                        );
+                      })}
                     </div>
 
                     <Pagination
