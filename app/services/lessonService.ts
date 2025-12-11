@@ -1,17 +1,7 @@
 import { api } from "./api";
+import { getCookie } from '../utils/cookies';
 
 const LESSONS_ENDPOINT = "/lessons";
-
-function getCookie(name: string): string | undefined {
-  if (typeof document === 'undefined') return undefined;
-  
-  const value = `; ${document.cookie}`;
-  const parts = value.split(`; ${name}=`);
-  if (parts.length === 2) {
-    return parts.pop()?.split(';').shift();
-  }
-  return undefined;
-}
 
 export interface Lesson {
   id?: number;

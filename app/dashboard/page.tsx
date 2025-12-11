@@ -23,32 +23,9 @@ import {
   deleteLesson,
 } from "../services/lessonService";
 import { fetchUserCount } from "../services/authService";
+import { Course, Lesson } from "../types";
 import "./dashboard.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
-
-interface Course {
-  id: number;
-  title: string;
-  description: string;
-  duration: number;
-  imageUrl?: string;
-  status: boolean;
-  createdAt?: string;
-  updatedAt?: string;
-  userId?: number;
-}
-
-interface Lesson {
-  id?: number;
-  name: string;
-  description: string;
-  coverImage?: string;
-  videoUrl: string;
-  status: boolean;
-  createdAt?: string;
-  updatedAt?: string;
-  courseId: number;
-}
 
 export default function DashboardPage() {
   const [isCreateCourseModalOpen, setIsCreateCourseModalOpen] = useState(false);

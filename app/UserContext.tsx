@@ -7,7 +7,8 @@ import React, {
   useEffect,
   ReactNode,
 } from "react";
-import { isAuthenticated as checkAuth, fetchUserData as fetchUserDataFromService, getCookie } from "./services/authService";
+import { isAuthenticated as checkAuth, fetchUserData as fetchUserDataFromService } from "./services/authService";
+import { getCookie, deleteCookie } from "./utils/cookies";
 import { api } from "./services/api";
 
 interface User {
@@ -43,7 +44,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
             setUser(userData);
           } else {
             setIsAuthenticated(false);
-            document.cookie = `token=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/`;
+            deleteCookie('token');
           }
         }
       }
@@ -60,7 +61,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
   const logout = () => {
     setUser(null);
     setIsAuthenticated(false);
-    document.cookie = `token=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/`;
+    deleteCookie('token');
   };
 
   return (

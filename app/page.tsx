@@ -8,8 +8,9 @@ import Pagination from "./components/Pagination/Pagination";
 import "./page.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import { getPublicCourses } from "./services/courseService";
+import { Course as BaseCourse } from "./types";
 
-interface Course {
+interface TransformedCourse {
   id: string;
   title: string;
   description: string;
@@ -21,7 +22,7 @@ interface Course {
 
 export default function Home() {
   const [searchTerm, setSearchTerm] = useState("");
-  const [courses, setCourses] = useState<Course[]>([]);
+  const [courses, setCourses] = useState<TransformedCourse[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -34,7 +35,7 @@ export default function Home() {
         setLoading(true);
         const data = await getPublicCourses();
 
-        const transformedCourses: Course[] = data.map((course) => ({
+        const transformedCourses: TransformedCourse[] = data.map((course) => ({
           id: course.id?.toString() || "",
           title: course.title,
           description: course.description,

@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useUser } from "../../UserContext";
+import { getCookie } from "../../utils/cookies";
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
@@ -18,15 +19,9 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
   const [isVerifying, setIsVerifying] = useState(true);
 
   useEffect(() => {
-    const hasTokenCookie = () => {
-      if (typeof document === "undefined") return false;
-      return document.cookie
-        .split(";")
-        .some((item) => item.trim().startsWith("token="));
-    };
-
     const checkAccess = () => {
-      const hasCookie = hasTokenCookie();
+      const token = getCookie("token");
+      const hasCookie = !!token;
 
       if (!hasCookie && !isAuthenticated) {
         router.push("/login");

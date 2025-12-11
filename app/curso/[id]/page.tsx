@@ -4,38 +4,17 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
 import Header from '../../components/Header/Header';
 import Footer from '../../components/Footer/Footer';
-import { getCourseById } from '../../services/courseService';
+import { getCourseById, getPublicCourseById } from '../../services/courseService';
 import { getPublicLessons } from '../../services/lessonService';
+import { useUser } from '../../UserContext';
+import { Course, Lesson } from '../../types';
 import './curso.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
-
-interface Course {
-  id?: number;
-  title: string;
-  description: string;
-  duration: number;
-  imageUrl?: string;
-  status: boolean;
-  createdAt?: string;
-  updatedAt?: string;
-  userId?: number;
-}
-
-interface Lesson {
-  id?: number;
-  name: string;
-  description: string;
-  coverImage?: string;
-  videoUrl: string;
-  status: boolean;
-  createdAt?: string;
-  updatedAt?: string;
-  courseId: number;
-}
 
 export default function CourseDetailPage() {
   const params = useParams();
   const courseId = params.id as string;
+  const { user, isAuthenticated } = useUser();
   
   const [course, setCourse] = useState<Course | null>(null);
   const [lessons, setLessons] = useState<Lesson[]>([]);
@@ -48,7 +27,18 @@ export default function CourseDetailPage() {
       try {
         setLoading(true);
         
-        const courseData = await getCourseById(Number(courseId));
+        // Check if user is admin to determine which endpoint to use
+        const isAdmin = user?.role === 'ADMIN';
+        let courseData;
+        
+        if (isAuthenticated && isAdmin) {
+          // Admin users can access all course details
+          courseData = await getCourseById(Number(courseId));
+        } else {
+          // Non-admin users should use the public endpoint
+          courseData = await getPublicCourseById(Number(courseId));
+        }
+        
         setCourse(courseData);
         
         const lessonsData = await getPublicLessons(Number(courseId));
@@ -68,7 +58,7 @@ export default function CourseDetailPage() {
     if (courseId) {
       fetchData();
     }
-  }, [courseId]);
+  }, [courseId, user, isAuthenticated]);
 
   if (loading) {
     return (

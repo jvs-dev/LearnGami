@@ -3,13 +3,7 @@ import { Course, CreateCourseData } from "../types";
 
 const COURSES_ENDPOINT = "/courses";
 
-function getCookie(name: string): string | undefined {
-  if (typeof document === 'undefined') return undefined;
-  const value = `; ${document.cookie}`;
-  const parts = value.split(`; ${name}=`);
-  if (parts.length === 2) return parts.pop()?.split(';').shift();
-  return undefined;
-}
+import { getCookie } from '../utils/cookies';
 
 export const createCourse = async (courseData: CreateCourseData): Promise<Course> => {
   const token = getCookie('token');
@@ -63,4 +57,11 @@ export const getPublicCourses = async (): Promise<Course[]> => {
   const { data, error } = await api.get(`${COURSES_ENDPOINT}/public`);
   if (error) throw new Error(error);
   return data as Course[];
+};
+
+// New function to get a single course publicly
+export const getPublicCourseById = async (id: number): Promise<Course> => {
+  const { data, error } = await api.get(`${COURSES_ENDPOINT}/public/${id}`);
+  if (error) throw new Error(error);
+  return data as Course;
 };

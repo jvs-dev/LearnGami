@@ -6,8 +6,19 @@ import StatusBadge from "../StatusBadge/StatusBadge";
 import { Course } from "../../types";
 import "./CourseCard.css";
 
+
+interface FlexibleCourse {
+  id: number | string;
+  title: string;
+  description: string;
+  duration: number | string;
+  imageUrl?: string;
+  status?: boolean | "active" | "inactive";
+  createdAt?: string;
+}
+
 interface CourseCardProps {
-  course: Course;
+  course: FlexibleCourse;
   variant?: "public" | "admin";
   onEdit?: (course: Course) => void;
   onDelete?: (id: number) => void;
@@ -68,8 +79,8 @@ const CourseCard: React.FC<CourseCardProps> = ({
               <i className="bi bi-clock"></i> Duração: {course.duration}
             </span>
             
-            {variant === "admin" && (
-              <StatusBadge isActive={course.status} />
+            {variant === "admin" && course.status !== undefined && (
+              <StatusBadge isActive={typeof course.status === 'boolean' ? course.status : course.status === 'active'} />
             )}
           </div>
         </div>
@@ -79,8 +90,8 @@ const CourseCard: React.FC<CourseCardProps> = ({
         <div className="course-card__actions">
           <button
             onClick={(e) => {
-              e.preventDefault();
-              onEdit?.(course);
+              e.preventDefault();              
+              onEdit?.(course as unknown as Course);
             }}
             className="course-card__action-button course-card__action-button--edit"
           >
@@ -88,8 +99,8 @@ const CourseCard: React.FC<CourseCardProps> = ({
           </button>
           <button
             onClick={(e) => {
-              e.preventDefault();
-              course.id && onDelete?.(course.id);
+              e.preventDefault();            
+              typeof course.id === 'number' && onDelete?.(course.id);
             }}
             className="course-card__action-button course-card__action-button--delete"
           >
