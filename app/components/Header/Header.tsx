@@ -2,6 +2,7 @@
 
 import React, { useState, useRef, useEffect } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import "./Header.css";
 import { useUser } from "../../UserContext";
 import { logout as authLogout } from "../../services/authService";
@@ -10,20 +11,34 @@ const Header: React.FC = () => {
   const { user, isAuthenticated, logout } = useUser();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLLIElement>(null);
+  const router = useRouter();
 
   const handleLogout = () => {
-    authLogout(); // Clear token from localStorage
-    logout(); // Update context state
+    authLogout();
+    logout();
     setIsDropdownOpen(false);
   };
-  
+
   const getUserFirstName = () => {
     if (user?.name) {
-      return `${user.name.split(" ")[0]} ${user.name.split(" ")[1]}`;
+      const nameParts = user.name.split(" ");
+      return nameParts.length > 1
+        ? `${nameParts[0]} ${nameParts[1]}`
+        : nameParts[0];
     }
     return "";
   };
-  
+
+  const handleDashboardClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+
+    if (user?.role === "ADMIN") {
+      router.push("/dashboard");
+    } else {
+      router.push("/curso");
+    }
+  };
+
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
@@ -39,6 +54,9 @@ const Header: React.FC = () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
+
+  // Debug information
+  useEffect(() => {}, [isAuthenticated, user]);
 
   return (
     <header className="header">
@@ -63,12 +81,13 @@ const Header: React.FC = () => {
             {isAuthenticated ? (
               <>
                 <li className="header__nav-item">
-                  <Link 
-                    href={user?.role === "ADMIN" ? "/dashboard" : "/curso"} 
+                  <a
+                    href={user?.role === "ADMIN" ? "/dashboard" : "/curso"}
                     className="header__nav-link"
+                    onClick={handleDashboardClick}
                   >
                     {user?.role === "ADMIN" ? "Dashboard" : "Favoritos"}
-                  </Link>
+                  </a>
                 </li>
                 <li className="header__nav-item" ref={dropdownRef}>
                   <button

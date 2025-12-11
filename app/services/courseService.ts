@@ -2,6 +2,18 @@ import { api } from "./api";
 
 const COURSES_ENDPOINT = "/courses";
 
+// Helper para ler cookies (O mesmo usado no authService/api)
+function getCookie(name: string): string | undefined {
+  if (typeof document === 'undefined') return undefined;
+  
+  const value = `; ${document.cookie}`;
+  const parts = value.split(`; ${name}=`);
+  if (parts.length === 2) {
+    return parts.pop()?.split(';').shift();
+  }
+  return undefined;
+}
+
 // Course data interface
 export interface Course {
   id?: number;
@@ -15,7 +27,7 @@ export interface Course {
   userId?: number;
 }
 
-// Interface for course creation (without id, createdAt, updatedAt, userId)
+// Interface for course creation
 export interface CreateCourseData {
   title: string;
   description: string;
@@ -27,8 +39,8 @@ export interface CreateCourseData {
 // Create a new course
 export const createCourse = async (courseData: CreateCourseData): Promise<Course> => {
   try {
-    // Get token from localStorage (using the correct key from authService)
-    const token = localStorage.getItem('token');
+    // CORREÇÃO: Pegar do Cookie, não do localStorage
+    const token = getCookie('token');
     
     if (!token) {
       throw new Error("Token não fornecido");
@@ -40,7 +52,7 @@ export const createCourse = async (courseData: CreateCourseData): Promise<Course
       throw new Error(error);
     }
     
-    return data.course;
+    return data.course || data; // Ajuste para garantir retorno correto
   } catch (error) {
     if (error instanceof Error) {
       throw error;
@@ -52,8 +64,8 @@ export const createCourse = async (courseData: CreateCourseData): Promise<Course
 // Get all courses for the authenticated user
 export const getUserCourses = async (): Promise<Course[]> => {
   try {
-    // Get token from localStorage (using the correct key from authService)
-    const token = localStorage.getItem('token');
+    // CORREÇÃO: Pegar do Cookie, não do localStorage
+    const token = getCookie('token');
     
     if (!token) {
       throw new Error("Token não fornecido");
@@ -65,7 +77,7 @@ export const getUserCourses = async (): Promise<Course[]> => {
       throw new Error(error);
     }
     
-    return data;
+    return data as Course[];
   } catch (error) {
     if (error instanceof Error) {
       throw error;
@@ -77,8 +89,8 @@ export const getUserCourses = async (): Promise<Course[]> => {
 // Get a specific course by ID
 export const getCourseById = async (id: number): Promise<Course> => {
   try {
-    // Get token from localStorage (using the correct key from authService)
-    const token = localStorage.getItem('token');
+    // CORREÇÃO: Pegar do Cookie, não do localStorage
+    const token = getCookie('token');
     
     if (!token) {
       throw new Error("Token não fornecido");
@@ -90,7 +102,7 @@ export const getCourseById = async (id: number): Promise<Course> => {
       throw new Error(error);
     }
     
-    return data;
+    return data as Course;
   } catch (error) {
     if (error instanceof Error) {
       throw error;
@@ -102,8 +114,8 @@ export const getCourseById = async (id: number): Promise<Course> => {
 // Update a course
 export const updateCourse = async (id: number, courseData: Partial<CreateCourseData>): Promise<Course> => {
   try {
-    // Get token from localStorage (using the correct key from authService)
-    const token = localStorage.getItem('token');
+    // CORREÇÃO: Pegar do Cookie, não do localStorage
+    const token = getCookie('token');
     
     if (!token) {
       throw new Error("Token não fornecido");
@@ -115,7 +127,7 @@ export const updateCourse = async (id: number, courseData: Partial<CreateCourseD
       throw new Error(error);
     }
     
-    return data.course;
+    return data.course || data;
   } catch (error) {
     if (error instanceof Error) {
       throw error;
@@ -127,8 +139,8 @@ export const updateCourse = async (id: number, courseData: Partial<CreateCourseD
 // Delete a course
 export const deleteCourse = async (id: number): Promise<void> => {
   try {
-    // Get token from localStorage (using the correct key from authService)
-    const token = localStorage.getItem('token');
+    // CORREÇÃO: Pegar do Cookie, não do localStorage
+    const token = getCookie('token');
     
     if (!token) {
       throw new Error("Token não fornecido");
@@ -150,14 +162,14 @@ export const deleteCourse = async (id: number): Promise<void> => {
 // Get public courses
 export const getPublicCourses = async (): Promise<Course[]> => {
   try {
-    // Public endpoint doesn't require authentication
+    // Rota pública não precisa de token
     const { data, error } = await api.get(`${COURSES_ENDPOINT}/public`);
     
     if (error) {
       throw new Error(error);
     }
     
-    return data;
+    return data as Course[];
   } catch (error) {
     if (error instanceof Error) {
       throw error;

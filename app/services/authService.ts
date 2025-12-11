@@ -4,7 +4,7 @@ export interface User {
   id: number;
   email: string;
   name: string;
-  role: string; // Add role property
+  role: string;
 }
 
 export interface RegisterResponse {
@@ -19,6 +19,34 @@ export interface LoginResponse {
   user: User;
 }
 
+// Helper function to get cookie value by name
+function getCookie(name: string): string | undefined {
+  if (typeof document === 'undefined') return undefined;
+  
+  const value = `; ${document.cookie}`;
+  const parts = value.split(`; ${name}=`);
+  if (parts.length === 2) {
+    return parts.pop()?.split(';').shift();
+  }
+  return undefined;
+}
+
+// Helper function to set a cookie
+function setCookie(name: string, value: string, days: number = 7) {
+  if (typeof document === 'undefined') return;
+  
+  const expires = new Date();
+  expires.setTime(expires.getTime() + (days * 24 * 60 * 60 * 1000));
+  document.cookie = `${name}=${value};expires=${expires.toUTCString()};path=/`;
+}
+
+// Helper function to delete a cookie
+function deleteCookie(name: string) {
+  if (typeof document === 'undefined') return;
+  
+  document.cookie = `${name}=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/`;
+}
+
 export const fetchUserData = async (token: string) => {
   try {
     const { data, error } = await api.get('/auth/me', token);
@@ -26,6 +54,7 @@ export const fetchUserData = async (token: string) => {
       console.error('Failed to fetch user data:', error);
       return null;
     }
+    console.log('User data fetched:', data.user);
     return data.user as User;
   } catch (e) {
     console.error('Failed to fetch user data:', e);
@@ -35,8 +64,8 @@ export const fetchUserData = async (token: string) => {
 
 export const fetchUserCount = async () => {
   try {
-    // Get token from localStorage
-    const token = localStorage.getItem('token');
+    // Get token from cookies
+    const token = getCookie('token');
     
     if (!token) {
       throw new Error("Token não fornecido");
@@ -65,8 +94,9 @@ export const register = async (name: string, email: string, password: string) =>
       return { data: null, error };
     }
 
+    // Store token in cookie
     if (data.token) {
-      localStorage.setItem('token', data.token);
+      setCookie('token', data.token);
     }
 
     return { data, error: null };
@@ -84,8 +114,9 @@ export const login = async (email: string, password: string) => {
       return { data: null, error };
     }
 
+    // Store token in cookie
     if (data.token) {
-      localStorage.setItem('token', data.token);
+      setCookie('token', data.token);
     }
 
     return { data, error: null };
@@ -96,11 +127,12 @@ export const login = async (email: string, password: string) => {
 };
 
 export const logout = () => {
-  localStorage.removeItem('token');
-  localStorage.removeItem('userData');
+  // Clear token cookie
+  deleteCookie('token');
 };
 
 export const isAuthenticated = () => {
-  const token = localStorage.getItem('token');
+  // Check for the presence of the token cookie
+  const token = getCookie('token');
   return !!token;
 };

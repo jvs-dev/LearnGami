@@ -3,7 +3,7 @@ import "./globals.css";
 import "../app/components/ProtectedRoute/ProtectedRoute.css";
 import "../app/components/Modal/Modal.css";
 import "../app/components/DashboardCourseCard/DashboardCourseCard.css";
-import { type_second } from "./functions/fonts";
+import { type_second } from "./utils/fonts";
 import Header from "./components/Header/Header";
 import Footer from "./components/Footer/Footer";
 import { UserProvider } from "./UserContext";

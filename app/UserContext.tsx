@@ -1,15 +1,32 @@
 "use client";
 
-import React, { createContext, useContext, useState, useEffect, ReactNode } from "react";
+import React, {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  ReactNode,
+} from "react";
 import { isAuthenticated as checkAuth } from "./services/authService";
 import { api } from "./services/api";
 
-// Define the shape of our user data
+// Helper function to get cookie value by name
+function getCookie(name: string): string | undefined {
+  if (typeof document === "undefined") return undefined;
+
+  const value = `; ${document.cookie}`;
+  const parts = value.split(`; ${name}=`);
+  if (parts.length === 2) {
+    return parts.pop()?.split(";").shift();
+  }
+  return undefined;
+}
+
 interface User {
   id: number;
   email: string;
   name: string;
-  role: string; // Add role property
+  role: string;
 }
 
 interface UserContextType {
@@ -21,17 +38,16 @@ interface UserContextType {
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
 
-// Function to fetch user data from the backend
 const fetchUserData = async (token: string) => {
   try {
-    const { data, error } = await api.get('/auth/me', token);
+    const { data, error } = await api.get("/auth/me", token);
     if (error) {
-      console.error('Failed to fetch user data:', error);
+      console.error("Failed to fetch user data:", error);
       return null;
     }
     return data.user as User;
   } catch (e) {
-    console.error('Failed to fetch user data:', e);
+    console.error("Failed to fetch user data:", e);
     return null;
   }
 };
@@ -41,22 +57,21 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   useEffect(() => {
-    // Check if user is already authenticated on app load
     const checkAuthentication = async () => {
       const authStatus = checkAuth();
       setIsAuthenticated(authStatus);
-      
-      // If authenticated, fetch user data from the backend
+
       if (authStatus) {
-        const token = localStorage.getItem('token');
+        // Use the same cookie helper function as authService
+        const token = getCookie("token");
         if (token) {
           const userData = await fetchUserData(token);
           if (userData) {
             setUser(userData);
           } else {
-            // If we can't fetch user data, logout the user
             setIsAuthenticated(false);
-            localStorage.removeItem('token');
+            // Clear the cookie if user data couldn't be fetched
+            document.cookie = `token=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/`;
           }
         }
       }
@@ -73,6 +88,8 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
   const logout = () => {
     setUser(null);
     setIsAuthenticated(false);
+    // Clear the cookie on logout
+    document.cookie = `token=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/`;
   };
 
   return (

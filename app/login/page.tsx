@@ -34,13 +34,16 @@ export default function LoginPage() {
       }
 
       if (data && data.token) {
+        console.log('Login successful, token received:', data.token);
         const userData = await fetchUserData(data.token);
+        console.log('User data fetched:', userData);
         if (userData) {
           loginUser(userData);
+          console.log('User logged in successfully');
+          // Redirect to home page after successful login
+          router.push("/");
         }
       }
-
-      router.push("/"); // Redirect to home page after successful login
     } catch (err) {
       setError("Erro ao fazer login. Tente novamente.");
       console.error(err);

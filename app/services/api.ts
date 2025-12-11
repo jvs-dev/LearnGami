@@ -1,3 +1,15 @@
+// Helper function to get cookie value by name
+function getCookie(name: string): string | undefined {
+  if (typeof document === 'undefined') return undefined;
+  
+  const value = `; ${document.cookie}`;
+  const parts = value.split(`; ${name}=`);
+  if (parts.length === 2) {
+    return parts.pop()?.split(';').shift();
+  }
+  return undefined;
+}
+
 const API_BASE_URL = 'http://localhost:3001/api';
 
 // Generic API request function
@@ -44,8 +56,11 @@ export const api = {
       'Content-Type': 'application/json'
     };
     
-    if (token) {
-      headers['Authorization'] = `Bearer ${token}`;
+    // Use provided token or get from cookies
+    const tokenToUse = token || getCookie('token');
+    
+    if (tokenToUse) {
+      headers['Authorization'] = `Bearer ${tokenToUse}`;
     }
     
     return apiRequest(endpoint, { 
@@ -58,8 +73,11 @@ export const api = {
       'Content-Type': 'application/json'
     };
     
-    if (token) {
-      headers['Authorization'] = `Bearer ${token}`;
+    // Use provided token or get from cookies
+    const tokenToUse = token || getCookie('token');
+    
+    if (tokenToUse) {
+      headers['Authorization'] = `Bearer ${tokenToUse}`;
     }
     
     return apiRequest(endpoint, { 
@@ -73,8 +91,11 @@ export const api = {
       'Content-Type': 'application/json'
     };
     
-    if (token) {
-      headers['Authorization'] = `Bearer ${token}`;
+    // Use provided token or get from cookies
+    const tokenToUse = token || getCookie('token');
+    
+    if (tokenToUse) {
+      headers['Authorization'] = `Bearer ${tokenToUse}`;
     }
     
     return apiRequest(endpoint, { 
@@ -88,8 +109,11 @@ export const api = {
       'Content-Type': 'application/json'
     };
     
-    if (token) {
-      headers['Authorization'] = `Bearer ${token}`;
+    // Use provided token or get from cookies
+    const tokenToUse = token || getCookie('token');
+    
+    if (tokenToUse) {
+      headers['Authorization'] = `Bearer ${tokenToUse}`;
     }
     
     return apiRequest(endpoint, { 

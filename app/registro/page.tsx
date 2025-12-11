@@ -45,10 +45,10 @@ export default function RegistroPage() {
         const userData = await fetchUserData(data.token);
         if (userData) {
           loginUser(userData);
+          // Redirect to home page after successful registration
+          router.push("/");
         }
       }
-      
-      router.push("/"); // Redirect to home page after successful registration
     } catch (err) {
       setError("Erro ao registrar usuário. Tente novamente.");
       console.error(err);
