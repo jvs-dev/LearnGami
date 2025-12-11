@@ -1,4 +1,3 @@
-// Helper function to get cookie value by name
 function getCookie(name: string): string | undefined {
   if (typeof document === 'undefined') return undefined;
   
@@ -12,7 +11,6 @@ function getCookie(name: string): string | undefined {
 
 const API_BASE_URL = 'http://localhost:3001/api';
 
-// Generic API request function
 const apiRequest = async (endpoint: string, options: RequestInit = {}) => {
   const url = `${API_BASE_URL}${endpoint}`;
   
@@ -27,13 +25,11 @@ const apiRequest = async (endpoint: string, options: RequestInit = {}) => {
   try {
     const response = await fetch(url, config);
     
-    // Handle successful responses
     if (response.ok) {
       const data = await response.json();
       return { data, error: null };
     }
     
-    // Handle error responses
     let errorMessage = 'Erro desconhecido';
     try {
       const errorData = await response.json();
@@ -49,14 +45,12 @@ const apiRequest = async (endpoint: string, options: RequestInit = {}) => {
   }
 };
 
-// HTTP Methods
 export const api = {
   get: (endpoint: string, token?: string) => {
     const headers: HeadersInit = {
       'Content-Type': 'application/json'
     };
     
-    // Use provided token or get from cookies
     const tokenToUse = token || getCookie('token');
     
     if (tokenToUse) {
@@ -73,7 +67,6 @@ export const api = {
       'Content-Type': 'application/json'
     };
     
-    // Use provided token or get from cookies
     const tokenToUse = token || getCookie('token');
     
     if (tokenToUse) {
@@ -91,7 +84,6 @@ export const api = {
       'Content-Type': 'application/json'
     };
     
-    // Use provided token or get from cookies
     const tokenToUse = token || getCookie('token');
     
     if (tokenToUse) {
@@ -109,7 +101,6 @@ export const api = {
       'Content-Type': 'application/json'
     };
     
-    // Use provided token or get from cookies
     const tokenToUse = token || getCookie('token');
     
     if (tokenToUse) {

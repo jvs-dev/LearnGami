@@ -2,36 +2,25 @@
 
 import React from "react";
 import Link from "next/link";
+import StatusBadge from "../StatusBadge/StatusBadge";
+import { Course } from "../../types";
 import "./CourseCard.css";
-
-interface Course {
-  id: string;
-  title: string;
-  description: string;
-  duration: string;
-  imageUrl: string;
-  status: "active" | "inactive";
-  createdAt: string;
-}
 
 interface CourseCardProps {
   course: Course;
-  onEdit?: (id: string) => void;
-  onDelete?: (id: string) => void;
+  variant?: "public" | "admin";
+  onEdit?: (course: Course) => void;
+  onDelete?: (id: number) => void;
 }
 
 const CourseCard: React.FC<CourseCardProps> = ({
   course,
+  variant = "public",
   onEdit,
   onDelete,
 }) => {
-  const formattedDate = new Date(course.createdAt).toLocaleDateString("pt-BR", {
-    day: "2-digit",
-    month: "2-digit",
-    year: "numeric",
-  });
-
   const isNewCourse = () => {
+    if (!course.createdAt) return false;
     const createdDate = new Date(course.createdAt);
     const currentDate = new Date();
     const timeDifference = currentDate.getTime() - createdDate.getTime();
@@ -39,9 +28,11 @@ const CourseCard: React.FC<CourseCardProps> = ({
     return daysDifference <= 30;
   };
 
+  const href = `/curso/${course.id}`;
+
   return (
     <div className="course-card">
-      <Link href={`/curso/${course.id}`} className="course-card__link">
+      <Link href={href} className="course-card__link">
         <div className="course-card__image-container">
           {course.imageUrl ? (
             <img
@@ -61,44 +52,49 @@ const CourseCard: React.FC<CourseCardProps> = ({
         <div className="course-card__content">
           <h3 className="course-card__title">
             {course.title}
-            {isNewCourse() && (
+            {variant === "public" && isNewCourse() && (
               <span className="course-card__new-badge">Novo</span>
             )}
           </h3>
-          <p className="course-card__description">{course.description}</p>
+          
+          <p className="course-card__description">
+            {course.description.length > 100
+              ? `${course.description.substring(0, 100)}...`
+              : course.description}
+          </p>
 
           <div className="course-card__info">
             <span className="course-card__duration">
-              Duração: {course.duration}
+              <i className="bi bi-clock"></i> Duração: {course.duration}
             </span>
-          </div>        
+            
+            {variant === "admin" && (
+              <StatusBadge isActive={course.status} />
+            )}
+          </div>
         </div>
       </Link>
 
-      {(onEdit || onDelete) && (
+      {variant === "admin" && (
         <div className="course-card__actions">
-          {onEdit && (
-            <button
-              onClick={(e) => {
-                e.preventDefault();
-                onEdit(course.id);
-              }}
-              className="course-card__action-button course-card__action-button--edit"
-            >
-              Editar
-            </button>
-          )}
-          {onDelete && (
-            <button
-              onClick={(e) => {
-                e.preventDefault();
-                onDelete(course.id);
-              }}
-              className="course-card__action-button course-card__action-button--delete"
-            >
-              Excluir
-            </button>
-          )}
+          <button
+            onClick={(e) => {
+              e.preventDefault();
+              onEdit?.(course);
+            }}
+            className="course-card__action-button course-card__action-button--edit"
+          >
+            Editar
+          </button>
+          <button
+            onClick={(e) => {
+              e.preventDefault();
+              course.id && onDelete?.(course.id);
+            }}
+            className="course-card__action-button course-card__action-button--delete"
+          >
+            Excluir
+          </button>
         </div>
       )}
     </div>

@@ -46,7 +46,6 @@ const LessonForm: React.FC<LessonFormProps> = ({
   const [currentPage, setCurrentPage] = useState(1);
   const coursesPerPage = 4;
 
-  // Initialize form data only once when component mounts
   useEffect(() => {
     setFormData({
       name: initialData.name || '',
@@ -56,9 +55,8 @@ const LessonForm: React.FC<LessonFormProps> = ({
       status: initialData.status !== undefined ? initialData.status : true,
       courseId: initialData.courseId || 0
     });
-  }, []); // Empty dependency array - only run once on mount
+  }, []);
 
-  // Filter and paginate courses
   const filteredCourses = useMemo(() => {
     return courses.filter(course => 
       course.title.toLowerCase().includes(searchTerm.toLowerCase())
@@ -128,7 +126,6 @@ const LessonForm: React.FC<LessonFormProps> = ({
     }
   };
 
-  // Render pagination controls
   const renderPagination = () => {
     if (totalPages <= 1) return null;
 

@@ -1,0 +1,77 @@
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  width: 100%;
+}
+
+.form-label {
+  font-weight: 500;
+  color: var(--color-text-light);
+}
+
+.form-input {
+  font-family: var(--font-family-tertiary);
+  padding: 0.75rem;
+  border: 1px solid var(--color-border);
+  outline: none;
+  border-radius: 0.375rem;
+  font-size: 1rem;
+  font-weight: 500;
+  transition: border-color 0.2s ease;
+  background-color: var(--color-background-input);
+  color: var(--color-text-light);
+  width: 100%;
+}
+
+.form-input:focus {
+  border-color: var(--color-border-focus);
+}
+
+.form-input--error {
+  border-color: var(--color-status-inactive-text);
+}
+
+.form-error-text {
+  color: var(--color-status-inactive-text);
+  font-size: 0.75rem;
+}
+
+/* Password Specifics */
+.password-container {
+  position: relative;
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+
+/* Garante espaço para o ícone não ficar em cima do texto */
+.form-input--password {
+  padding-right: 3rem; 
+}
+
+.password-container:focus-within .form-input {
+  border-color: var(--color-border-focus);
+}
+
+.password-toggle {
+  position: absolute;
+  right: 0.75rem; /* Ajustado para não colar na borda */
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: var(--color-text-medium); /* Cor cinza para contraste */
+  cursor: pointer;
+  padding: 0.25rem; /* Área de clique maior */
+  font-size: 1.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2; /* Garante que fique acima do input */
+  transition: color 0.2s ease;
+}
+
+.password-toggle:hover {
+  color: var(--color-text-light); /* Fica mais claro ao passar o mouse */
+}

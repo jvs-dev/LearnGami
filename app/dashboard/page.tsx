@@ -7,7 +7,7 @@ import ProtectedRoute from "../components/ProtectedRoute/ProtectedRoute";
 import Modal from "../components/Modal/Modal";
 import CourseForm from "../components/CourseForm/CourseForm";
 import LessonForm from "../components/LessonForm/LessonForm";
-import DashboardCourseCard from "../components/DashboardCourseCard/DashboardCourseCard";
+import CourseCard from "../components/CourseCard/CourseCard";
 import LessonCard from "../components/LessonCard/LessonCard";
 import Pagination from "../components/Pagination/Pagination";
 import {
@@ -16,18 +16,18 @@ import {
   deleteCourse,
   updateCourse,
 } from "../services/courseService";
-import { 
+import {
   createLesson,
   getLessonsByCourse,
   updateLesson,
-  deleteLesson
+  deleteLesson,
 } from "../services/lessonService";
 import { fetchUserCount } from "../services/authService";
 import "./dashboard.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
 
 interface Course {
-  id?: number;
+  id: number;
   title: string;
   description: string;
   duration: number;
@@ -84,12 +84,12 @@ export default function DashboardPage() {
   // Memoize the courses array for the lesson form to prevent re-renders
   const courseOptions = useMemo(() => {
     return courses
-      .map(course => ({ 
-        id: course.id || 0, 
+      .map((course) => ({
+        id: course.id || 0,
         title: course.title,
-        imageUrl: course.imageUrl
+        imageUrl: course.imageUrl,
       }))
-      .filter(course => course.id > 0);
+      .filter((course) => course.id > 0);
   }, [courses]);
 
   useEffect(() => {
@@ -121,7 +121,10 @@ export default function DashboardPage() {
               const courseLessons = await getLessonsByCourse(course.id);
               allLessons.push(...courseLessons);
             } catch (err) {
-              console.error(`Error fetching lessons for course ${course.id}:`, err);
+              console.error(
+                `Error fetching lessons for course ${course.id}:`,
+                err
+              );
             }
           }
         }
@@ -262,7 +265,6 @@ export default function DashboardPage() {
     }
   };
 
-  // Lesson management functions
   const handleCreateLesson = async (lessonData: any) => {
     try {
       const createdLesson = await createLesson(lessonData);
@@ -321,12 +323,11 @@ export default function DashboardPage() {
     }
   };
 
-  // Filter lessons by search term
   const filteredLessons = useMemo(() => {
     return lessons.filter((lesson) => {
-      const course = courses.find(c => c.id === lesson.courseId);
+      const course = courses.find((c) => c.id === lesson.courseId);
       const courseTitle = course ? course.title.toLowerCase() : "";
-      
+
       return (
         lesson.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
         lesson.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -335,7 +336,6 @@ export default function DashboardPage() {
     });
   }, [lessons, courses, searchTerm]);
 
-  // Paginate lessons
   const lessonsTotalPages = Math.ceil(filteredLessons.length / lessonsPerPage);
   const lessonsStartIndex = (lessonsCurrentPage - 1) * lessonsPerPage;
   const currentLessons = filteredLessons.slice(
@@ -457,10 +457,14 @@ export default function DashboardPage() {
                   <>
                     <div className="dashboard__courses-grid">
                       {currentCourses.map((course) => (
-                        <DashboardCourseCard
+                        <CourseCard
                           key={course.id}
                           course={course}
-                          onEdit={handleEditCourse}
+                          variant="admin"
+                          onEdit={(c) => {
+                            setCurrentEditingCourse(c);
+                            setIsEditCourseModalOpen(true);
+                          }}
                           onDelete={handleDeleteCourse}
                         />
                       ))}
@@ -496,7 +500,9 @@ export default function DashboardPage() {
                   <>
                     <div className="dashboard__lessons-grid">
                       {currentLessons.map((lesson) => {
-                        const course = courses.find(c => c.id === lesson.courseId);
+                        const course = courses.find(
+                          (c) => c.id === lesson.courseId
+                        );
                         return (
                           <LessonCard
                             key={lesson.id}
@@ -522,7 +528,6 @@ export default function DashboardPage() {
         </div>
       </div>
 
-      {/* Create Course Modal */}
       <Modal
         isOpen={isCreateCourseModalOpen}
         onClose={() => setIsCreateCourseModalOpen(false)}
@@ -534,7 +539,6 @@ export default function DashboardPage() {
         />
       </Modal>
 
-      {/* Edit Course Modal */}
       <Modal
         isOpen={isEditCourseModalOpen}
         onClose={() => {
@@ -561,7 +565,6 @@ export default function DashboardPage() {
         )}
       </Modal>
 
-      {/* Create Lesson Modal */}
       <Modal
         isOpen={isCreateLessonModalOpen}
         onClose={() => setIsCreateLessonModalOpen(false)}
@@ -574,7 +577,6 @@ export default function DashboardPage() {
         />
       </Modal>
 
-      {/* Edit Lesson Modal */}
       <Modal
         isOpen={isEditLessonModalOpen}
         onClose={() => {

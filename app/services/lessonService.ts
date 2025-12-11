@@ -2,7 +2,6 @@ import { api } from "./api";
 
 const LESSONS_ENDPOINT = "/lessons";
 
-// Helper para ler cookies (O mesmo usado no authService/api)
 function getCookie(name: string): string | undefined {
   if (typeof document === 'undefined') return undefined;
   
@@ -14,7 +13,6 @@ function getCookie(name: string): string | undefined {
   return undefined;
 }
 
-// Lesson data interface
 export interface Lesson {
   id?: number;
   name: string;
@@ -27,7 +25,6 @@ export interface Lesson {
   courseId: number;
 }
 
-// Interface for lesson creation
 export interface CreateLessonData {
   name: string;
   description: string;
@@ -37,7 +34,6 @@ export interface CreateLessonData {
   status?: boolean;
 }
 
-// Create a new lesson
 export const createLesson = async (lessonData: CreateLessonData): Promise<Lesson> => {
   try {
     const token = getCookie('token');
@@ -61,7 +57,6 @@ export const createLesson = async (lessonData: CreateLessonData): Promise<Lesson
   }
 };
 
-// Get all lessons for a specific course
 export const getLessonsByCourse = async (courseId: number): Promise<Lesson[]> => {
   try {
     const token = getCookie('token');
@@ -85,7 +80,6 @@ export const getLessonsByCourse = async (courseId: number): Promise<Lesson[]> =>
   }
 };
 
-// Get a specific lesson by ID
 export const getLessonById = async (id: number): Promise<Lesson> => {
   try {
     const token = getCookie('token');
@@ -109,7 +103,6 @@ export const getLessonById = async (id: number): Promise<Lesson> => {
   }
 };
 
-// Update a lesson
 export const updateLesson = async (id: number, lessonData: Partial<CreateLessonData>): Promise<Lesson> => {
   try {
     const token = getCookie('token');
@@ -133,7 +126,6 @@ export const updateLesson = async (id: number, lessonData: Partial<CreateLessonD
   }
 };
 
-// Delete a lesson
 export const deleteLesson = async (id: number): Promise<void> => {
   try {
     const token = getCookie('token');
@@ -155,10 +147,8 @@ export const deleteLesson = async (id: number): Promise<void> => {
   }
 };
 
-// Get public lessons for a course
 export const getPublicLessons = async (courseId: number): Promise<Lesson[]> => {
   try {
-    // Rota pública não precisa de token
     const { data, error } = await api.get(`${LESSONS_ENDPOINT}/public/course/${courseId}`);
     
     if (error) {

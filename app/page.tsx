@@ -142,7 +142,6 @@ export default function Home() {
                           : "Cursos Disponíveis"
                       }
                     />
-
                     <Pagination
                       currentPage={currentPage}
                       totalPages={totalPages}

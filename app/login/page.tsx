@@ -2,16 +2,21 @@
 
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
-import "./login.css";
 import { login, fetchUserData } from "../services/authService";
 import { useUser } from "../UserContext";
-import "bootstrap-icons/font/bootstrap-icons.css";
 import { isValidEmail } from "../utils/validators";
+
+import AuthLayout from "../components/AuthLayout/AuthLayout";
+import Input from "../components/ui/Input/Input";
+import PasswordInput from "../components/ui/Input/PasswordInput";
+import Button from "../components/ui/Button/Button";
+
+import "../components/AuthLayout/AuthLayout.css";
+import "./login.css";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -20,7 +25,6 @@ export default function LoginPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
     setLoading(true);
     setError("");
 
@@ -55,93 +59,39 @@ export default function LoginPage() {
   };
 
   return (
-    <>
-      <div className="login">
-        <div className="login__container">
-          <div className="login__logo-container">
-            <img
-              src="./favicon.svg"
-              alt="LearnGami Logo"
-              className="login__logo"
-            />
-            <h1 className="login__logo-title">LearnGami</h1>
-          </div>
-          <div className="login__card">
-            <h1 className="login__title title">Entrar</h1>
+    <AuthLayout
+      title="Entrar"
+      imageSrc="https://images.pexels.com/photos/700413/pexels-photo-700413.jpeg"
+      footerText="Não tem uma conta?"
+      footerLinkText="Registre-se"
+      footerLinkHref="/registro"
+    >
+      <form onSubmit={handleSubmit} className="auth-layout__form-wrapper">
+        <Input
+          id="email"
+          type="email"
+          label="Email"
+          placeholder="Digite seu email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
+        />
 
-            <form onSubmit={handleSubmit} className="login__form">
-              <div className="login__form-group">
-                <label htmlFor="email" className="login__label">
-                  Email
-                </label>
-                <input
-                  id="email"
-                  type="email"
-                  placeholder="Digite seu email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="login__input"
-                  required
-                />
-              </div>
-              <div className="login__form-group">
-                <label htmlFor="password" className="login__label">
-                  Senha
-                </label>
-                <div className="login__password-container">
-                  <input
-                    id="password"
-                    type={showPassword ? "text" : "password"}
-                    placeholder="Digite sua senha"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    className="login__input login__input--password"
-                    required
-                  />
-                  <button
-                    type="button"
-                    className="login__password-toggle"
-                    onClick={() => setShowPassword(!showPassword)}
-                    aria-label={
-                      showPassword ? "Ocultar senha" : "Mostrar senha"
-                    }
-                  >
-                    <i
-                      className={showPassword ? "bi bi-eye-slash" : "bi bi-eye"}
-                    ></i>
-                  </button>
-                </div>
-              </div>
+        <PasswordInput
+          id="password"
+          label="Senha"
+          placeholder="Digite sua senha"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
+        />
 
-              {error && <div className="login__error">{error}</div>}
+        {error && <div className="auth-layout__error">{error}</div>}
 
-              <button
-                type="submit"
-                className="login__button"
-                disabled={loading}
-              >
-                {loading ? "Entrando..." : "Entrar"}
-              </button>
-            </form>
-
-            <div className="login__footer">
-              <p>
-                Não tem uma conta?{" "}
-                <a href="/registro" className="login__link">
-                  Registre-se
-                </a>
-              </p>
-            </div>
-          </div>
-          <div className="login__image-container">
-            <img
-              src="https://images.pexels.com/photos/700413/pexels-photo-700413.jpeg"
-              alt="Login illustration"
-              className="login__image"
-            />
-          </div>
-        </div>
-      </div>
-    </>
+        <Button type="submit" isLoading={loading}>
+          Entrar
+        </Button>
+      </form>
+    </AuthLayout>
   );
 }

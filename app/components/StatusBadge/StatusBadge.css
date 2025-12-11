@@ -1,0 +1,17 @@
+.status-badge {
+   font-size: 0.75rem;
+   padding: 0.25rem 0.5rem;
+   border-radius: 0.25rem;
+   font-weight: 500;
+   display: inline-block;
+}
+
+.status-badge--active {
+   background-color: var(--color-status-active-bg);
+   color: var(--color-status-active-text);
+}
+
+.status-badge--inactive {
+   background-color: var(--color-status-inactive-bg);
+   color: var(--color-status-inactive-text);
+}

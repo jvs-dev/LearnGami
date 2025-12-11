@@ -48,15 +48,12 @@ export default function CourseDetailPage() {
       try {
         setLoading(true);
         
-        // Fetch course details
         const courseData = await getCourseById(Number(courseId));
         setCourse(courseData);
         
-        // Fetch lessons for this course
         const lessonsData = await getPublicLessons(Number(courseId));
         setLessons(lessonsData);
         
-        // Set first lesson as active by default
         if (lessonsData.length > 0) {
           setActiveLesson(lessonsData[0]);
         }
