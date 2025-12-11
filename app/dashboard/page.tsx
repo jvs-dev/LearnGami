@@ -6,7 +6,9 @@ import Footer from "../components/Footer/Footer";
 import ProtectedRoute from "../components/ProtectedRoute/ProtectedRoute";
 import Modal from "../components/Modal/Modal";
 import CourseForm from "../components/CourseForm/CourseForm";
+import LessonForm from "../components/LessonForm/LessonForm";
 import DashboardCourseCard from "../components/DashboardCourseCard/DashboardCourseCard";
+import LessonCard from "../components/LessonCard/LessonCard";
 import Pagination from "../components/Pagination/Pagination";
 import {
   createCourse,
@@ -14,6 +16,12 @@ import {
   deleteCourse,
   updateCourse,
 } from "../services/courseService";
+import { 
+  createLesson,
+  getLessonsByCourse,
+  updateLesson,
+  deleteLesson
+} from "../services/lessonService";
 import { fetchUserCount } from "../services/authService";
 import "./dashboard.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
@@ -30,18 +38,37 @@ interface Course {
   userId?: number;
 }
 
+interface Lesson {
+  id?: number;
+  name: string;
+  description: string;
+  coverImage?: string;
+  videoUrl: string;
+  status: boolean;
+  createdAt?: string;
+  updatedAt?: string;
+  courseId: number;
+}
+
 export default function DashboardPage() {
   const [isCreateCourseModalOpen, setIsCreateCourseModalOpen] = useState(false);
   const [isEditCourseModalOpen, setIsEditCourseModalOpen] = useState(false);
+  const [isCreateLessonModalOpen, setIsCreateLessonModalOpen] = useState(false);
+  const [isEditLessonModalOpen, setIsEditLessonModalOpen] = useState(false);
   const [currentEditingCourse, setCurrentEditingCourse] =
     useState<Course | null>(null);
+  const [currentEditingLesson, setCurrentEditingLesson] =
+    useState<Lesson | null>(null);
 
   const [courses, setCourses] = useState<Course[]>([]);
+  const [lessons, setLessons] = useState<Lesson[]>([]);
   const [userCount, setUserCount] = useState<number | null>(null);
 
   const [loading, setLoading] = useState(true);
+  const [lessonsLoading, setLessonsLoading] = useState(true);
   const [userCountLoading, setUserCountLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [lessonsError, setLessonsError] = useState<string | null>(null);
   const [userCountError, setUserCountError] = useState<string | null>(null);
 
   const [searchTerm, setSearchTerm] = useState("");
@@ -50,7 +77,20 @@ export default function DashboardPage() {
   >("all");
 
   const [currentPage, setCurrentPage] = useState(1);
+  const [lessonsCurrentPage, setLessonsCurrentPage] = useState(1);
   const coursesPerPage = 6;
+  const lessonsPerPage = 6;
+
+  // Memoize the courses array for the lesson form to prevent re-renders
+  const courseOptions = useMemo(() => {
+    return courses
+      .map(course => ({ 
+        id: course.id || 0, 
+        title: course.title,
+        imageUrl: course.imageUrl
+      }))
+      .filter(course => course.id > 0);
+  }, [courses]);
 
   useEffect(() => {
     const fetchCourses = async () => {
@@ -68,6 +108,36 @@ export default function DashboardPage() {
 
     fetchCourses();
   }, []);
+
+  useEffect(() => {
+    const fetchLessons = async () => {
+      try {
+        setLessonsLoading(true);
+        // Fetch lessons for all courses
+        const allLessons: Lesson[] = [];
+        for (const course of courses) {
+          if (course.id) {
+            try {
+              const courseLessons = await getLessonsByCourse(course.id);
+              allLessons.push(...courseLessons);
+            } catch (err) {
+              console.error(`Error fetching lessons for course ${course.id}:`, err);
+            }
+          }
+        }
+        setLessons(allLessons);
+      } catch (err) {
+        setLessonsError("Erro ao carregar aulas: " + (err as Error).message);
+        console.error("Error fetching lessons:", err);
+      } finally {
+        setLessonsLoading(false);
+      }
+    };
+
+    if (courses.length > 0) {
+      fetchLessons();
+    }
+  }, [courses]);
 
   useEffect(() => {
     const fetchCount = async () => {
@@ -111,6 +181,11 @@ export default function DashboardPage() {
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+  const handleLessonsPageChange = (page: number) => {
+    setLessonsCurrentPage(page);
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
@@ -187,6 +262,87 @@ export default function DashboardPage() {
     }
   };
 
+  // Lesson management functions
+  const handleCreateLesson = async (lessonData: any) => {
+    try {
+      const createdLesson = await createLesson(lessonData);
+      setLessons((prev) => [...prev, createdLesson]);
+      setIsCreateLessonModalOpen(false);
+      alert("Aula criada com sucesso!");
+    } catch (error) {
+      console.error("Error creating lesson:", error);
+      alert("Erro ao criar aula: " + (error as Error).message);
+    }
+  };
+
+  const handleEditLesson = (lesson: Lesson) => {
+    setCurrentEditingLesson(lesson);
+    setIsEditLessonModalOpen(true);
+  };
+
+  const handleUpdateLesson = async (lessonData: any) => {
+    if (!currentEditingLesson || !currentEditingLesson.id) {
+      alert("Erro: Nenhuma aula selecionada para edição.");
+      return;
+    }
+
+    try {
+      const updatedLesson = await updateLesson(
+        currentEditingLesson.id,
+        lessonData
+      );
+
+      setLessons((prev) =>
+        prev.map((lesson) =>
+          lesson.id === updatedLesson.id ? updatedLesson : lesson
+        )
+      );
+      setIsEditLessonModalOpen(false);
+      setCurrentEditingLesson(null);
+      alert("Aula atualizada com sucesso!");
+    } catch (error) {
+      console.error("Error updating lesson:", error);
+      alert("Erro ao atualizar aula: " + (error as Error).message);
+    }
+  };
+
+  const handleDeleteLesson = async (lessonId: number) => {
+    if (!window.confirm("Tem certeza que deseja excluir esta aula?")) {
+      return;
+    }
+
+    try {
+      await deleteLesson(lessonId);
+      setLessons((prev) => prev.filter((lesson) => lesson.id !== lessonId));
+      alert("Aula excluída com sucesso!");
+    } catch (error) {
+      console.error("Error deleting lesson:", error);
+      alert("Erro ao excluir aula: " + (error as Error).message);
+    }
+  };
+
+  // Filter lessons by search term
+  const filteredLessons = useMemo(() => {
+    return lessons.filter((lesson) => {
+      const course = courses.find(c => c.id === lesson.courseId);
+      const courseTitle = course ? course.title.toLowerCase() : "";
+      
+      return (
+        lesson.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        lesson.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        courseTitle.includes(searchTerm.toLowerCase())
+      );
+    });
+  }, [lessons, courses, searchTerm]);
+
+  // Paginate lessons
+  const lessonsTotalPages = Math.ceil(filteredLessons.length / lessonsPerPage);
+  const lessonsStartIndex = (lessonsCurrentPage - 1) * lessonsPerPage;
+  const currentLessons = filteredLessons.slice(
+    lessonsStartIndex,
+    lessonsStartIndex + lessonsPerPage
+  );
+
   return (
     <ProtectedRoute requiredRole="ADMIN">
       <Header />
@@ -213,7 +369,12 @@ export default function DashboardPage() {
               >
                 Criar Curso
               </button>
-              <button className="dashboard__action-button">Criar Aula</button>
+              <button
+                className="dashboard__action-button"
+                onClick={() => setIsCreateLessonModalOpen(true)}
+              >
+                Criar Aula
+              </button>
             </div>
 
             <div className="dashboard__stats">
@@ -235,7 +396,7 @@ export default function DashboardPage() {
 
               <div className="dashboard__stat-card">
                 <h3 className="dashboard__stat-title">Aulas</h3>
-                <p className="dashboard__stat-value">0</p>
+                <p className="dashboard__stat-value">{lessons.length}</p>
               </div>
             </div>
 
@@ -320,12 +481,48 @@ export default function DashboardPage() {
                   Lista de todas as aulas cadastradas no sistema com opções para
                   editar ou excluir.
                 </p>
+
+                {lessonsLoading ? (
+                  <p className="dashboard__loading-message">
+                    Carregando aulas...
+                  </p>
+                ) : lessonsError ? (
+                  <p className="dashboard__error-message">{lessonsError}</p>
+                ) : currentLessons.length === 0 ? (
+                  <p className="dashboard__empty-message">
+                    Nenhuma aula encontrada.
+                  </p>
+                ) : (
+                  <>
+                    <div className="dashboard__lessons-grid">
+                      {currentLessons.map((lesson) => {
+                        const course = courses.find(c => c.id === lesson.courseId);
+                        return (
+                          <LessonCard
+                            key={lesson.id}
+                            lesson={lesson}
+                            courseTitle={course?.title}
+                            onEdit={handleEditLesson}
+                            onDelete={handleDeleteLesson}
+                          />
+                        );
+                      })}
+                    </div>
+
+                    <Pagination
+                      currentPage={lessonsCurrentPage}
+                      totalPages={lessonsTotalPages}
+                      onPageChange={handleLessonsPageChange}
+                    />
+                  </>
+                )}
               </div>
             </div>
           </div>
         </div>
       </div>
 
+      {/* Create Course Modal */}
       <Modal
         isOpen={isCreateCourseModalOpen}
         onClose={() => setIsCreateCourseModalOpen(false)}
@@ -337,6 +534,7 @@ export default function DashboardPage() {
         />
       </Modal>
 
+      {/* Edit Course Modal */}
       <Modal
         isOpen={isEditCourseModalOpen}
         onClose={() => {
@@ -358,6 +556,41 @@ export default function DashboardPage() {
             onCancel={() => {
               setIsEditCourseModalOpen(false);
               setCurrentEditingCourse(null);
+            }}
+          />
+        )}
+      </Modal>
+
+      {/* Create Lesson Modal */}
+      <Modal
+        isOpen={isCreateLessonModalOpen}
+        onClose={() => setIsCreateLessonModalOpen(false)}
+        title="Criar Nova Aula"
+      >
+        <LessonForm
+          courses={courseOptions}
+          onSubmit={handleCreateLesson}
+          onCancel={() => setIsCreateLessonModalOpen(false)}
+        />
+      </Modal>
+
+      {/* Edit Lesson Modal */}
+      <Modal
+        isOpen={isEditLessonModalOpen}
+        onClose={() => {
+          setIsEditLessonModalOpen(false);
+          setCurrentEditingLesson(null);
+        }}
+        title="Editar Aula"
+      >
+        {currentEditingLesson && (
+          <LessonForm
+            courses={courseOptions}
+            initialData={currentEditingLesson}
+            onSubmit={handleUpdateLesson}
+            onCancel={() => {
+              setIsEditLessonModalOpen(false);
+              setCurrentEditingLesson(null);
             }}
           />
         )}

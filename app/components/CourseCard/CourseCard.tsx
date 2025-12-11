@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import Link from "next/link";
 import "./CourseCard.css";
 
 interface Course {
@@ -40,58 +41,66 @@ const CourseCard: React.FC<CourseCardProps> = ({
 
   return (
     <div className="course-card">
-      <div className="course-card__image-container">
-        {course.imageUrl ? (
-          <img
-            src={course.imageUrl}
-            alt={course.title}
-            className="course-card__image"
-          />
-        ) : (
-          <div className="course-card__image-placeholder">
-            <span className="course-card__image-placeholder-text">
-              Sem imagem
-            </span>
-          </div>
-        )}
-      </div>
-
-      <div className="course-card__content">
-        <h3 className="course-card__title">
-          {course.title}
-          {isNewCourse() && (
-            <span className="course-card__new-badge">Novo</span>
+      <Link href={`/curso/${course.id}`} className="course-card__link">
+        <div className="course-card__image-container">
+          {course.imageUrl ? (
+            <img
+              src={course.imageUrl}
+              alt={course.title}
+              className="course-card__image"
+            />
+          ) : (
+            <div className="course-card__image-placeholder">
+              <span className="course-card__image-placeholder-text">
+                Sem imagem
+              </span>
+            </div>
           )}
-        </h3>
-        <p className="course-card__description">{course.description}</p>
+        </div>
 
-        <div className="course-card__info">
-          <span className="course-card__duration">
-            Duração: {course.duration}
-          </span>
-        </div>        
+        <div className="course-card__content">
+          <h3 className="course-card__title">
+            {course.title}
+            {isNewCourse() && (
+              <span className="course-card__new-badge">Novo</span>
+            )}
+          </h3>
+          <p className="course-card__description">{course.description}</p>
 
-        {(onEdit || onDelete) && (
-          <div className="course-card__actions">
-            {onEdit && (
-              <button
-                onClick={() => onEdit(course.id)}
-                className="course-card__action-button course-card__action-button--edit"
-              >
-                Editar
-              </button>
-            )}
-            {onDelete && (
-              <button
-                onClick={() => onDelete(course.id)}
-                className="course-card__action-button course-card__action-button--delete"
-              >
-                Excluir
-              </button>
-            )}
-          </div>
-        )}
-      </div>
+          <div className="course-card__info">
+            <span className="course-card__duration">
+              Duração: {course.duration}
+            </span>
+          </div>        
+        </div>
+      </Link>
+
+      {(onEdit || onDelete) && (
+        <div className="course-card__actions">
+          {onEdit && (
+            <button
+              onClick={(e) => {
+                e.preventDefault();
+                onEdit(course.id);
+              }}
+              className="course-card__action-button course-card__action-button--edit"
+            >
+              Editar
+            </button>
+          )}
+          {onDelete && (
+            <button
+              onClick={(e) => {
+                e.preventDefault();
+                onDelete(course.id);
+              }}
+              className="course-card__action-button course-card__action-button--delete"
+            >
+              Excluir
+            </button>
+          )}
+        </div>
+      )}
     </div>
   );
 };

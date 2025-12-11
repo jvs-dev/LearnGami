@@ -215,7 +215,8 @@
   color: white;
 }
 
-.dashboard__courses-grid {
+.dashboard__courses-grid,
+.dashboard__lessons-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
   gap: 1.5rem;
@@ -312,7 +313,8 @@
     min-width: auto;
   }
 
-  .dashboard__courses-grid {
+  .dashboard__courses-grid,
+  .dashboard__lessons-grid {
     grid-template-columns: 1fr;
   }
 
