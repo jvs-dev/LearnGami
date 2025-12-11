@@ -7,6 +7,7 @@ import ProtectedRoute from "../components/ProtectedRoute/ProtectedRoute";
 import Modal from "../components/Modal/Modal";
 import CourseForm from "../components/CourseForm/CourseForm";
 import DashboardCourseCard from "../components/DashboardCourseCard/DashboardCourseCard";
+import Pagination from "../components/Pagination/Pagination";
 import {
   createCourse,
   getUserCourses,
@@ -34,16 +35,22 @@ export default function DashboardPage() {
   const [isEditCourseModalOpen, setIsEditCourseModalOpen] = useState(false);
   const [currentEditingCourse, setCurrentEditingCourse] =
     useState<Course | null>(null);
+
   const [courses, setCourses] = useState<Course[]>([]);
   const [userCount, setUserCount] = useState<number | null>(null);
+
   const [loading, setLoading] = useState(true);
   const [userCountLoading, setUserCountLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [userCountError, setUserCountError] = useState<string | null>(null);
+
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState<
     "all" | "active" | "inactive"
   >("all");
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const coursesPerPage = 6;
 
   useEffect(() => {
     const fetchCourses = async () => {
@@ -95,10 +102,31 @@ export default function DashboardPage() {
     });
   }, [courses, searchTerm, statusFilter]);
 
+  const totalPages = Math.ceil(filteredCourses.length / coursesPerPage);
+  const startIndex = (currentPage - 1) * coursesPerPage;
+  const currentCourses = filteredCourses.slice(
+    startIndex,
+    startIndex + coursesPerPage
+  );
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(e.target.value);
+    setCurrentPage(1);
+  };
+
+  const handleFilterChange = (filter: "all" | "active" | "inactive") => {
+    setStatusFilter(filter);
+    setCurrentPage(1);
+  };
+
   const handleCreateCourse = async (courseData: any) => {
     try {
-      const createdCourse = await createCourse(courseData);      
-
+      const createdCourse = await createCourse(courseData);
       setCourses((prev) => [...prev, createdCourse]);
       setIsCreateCourseModalOpen(false);
       alert("Curso criado com sucesso!");
@@ -124,7 +152,6 @@ export default function DashboardPage() {
         currentEditingCourse.id,
         courseData
       );
-      console.log("Updated course:", updatedCourse);
 
       setCourses((prev) =>
         prev.map((course) =>
@@ -147,8 +174,12 @@ export default function DashboardPage() {
 
     try {
       await deleteCourse(courseId);
-
       setCourses((prev) => prev.filter((course) => course.id !== courseId));
+
+      if (currentCourses.length === 1 && currentPage > 1) {
+        setCurrentPage((prev) => prev - 1);
+      }
+
       alert("Curso excluído com sucesso!");
     } catch (error) {
       console.error("Error deleting course:", error);
@@ -194,9 +225,9 @@ export default function DashboardPage() {
               <div className="dashboard__stat-card">
                 <h3 className="dashboard__stat-title">Usuários</h3>
                 {userCountLoading ? (
-                  <p className="dashboard__stat-value">Carregando...</p>
+                  <p className="dashboard__stat-value">...</p>
                 ) : userCountError ? (
-                  <p className="dashboard__stat-value">Erro</p>
+                  <p className="dashboard__stat-value text-red-500">-</p>
                 ) : (
                   <p className="dashboard__stat-value">{userCount}</p>
                 )}
@@ -223,7 +254,7 @@ export default function DashboardPage() {
                         type="text"
                         placeholder="Pesquisar cursos..."
                         value={searchTerm}
-                        onChange={(e) => setSearchTerm(e.target.value)}
+                        onChange={handleSearchChange}
                         className="dashboard__search-input"
                       />
                       <i className="bi bi-search dashboard__search-icon"></i>
@@ -231,36 +262,23 @@ export default function DashboardPage() {
                   </div>
 
                   <div className="dashboard__filter-buttons">
-                    <button
-                      className={`dashboard__filter-button ${
-                        statusFilter === "all"
-                          ? "dashboard__filter-button--active"
-                          : ""
-                      }`}
-                      onClick={() => setStatusFilter("all")}
-                    >
-                      Todos
-                    </button>
-                    <button
-                      className={`dashboard__filter-button ${
-                        statusFilter === "active"
-                          ? "dashboard__filter-button--active"
-                          : ""
-                      }`}
-                      onClick={() => setStatusFilter("active")}
-                    >
-                      Ativos
-                    </button>
-                    <button
-                      className={`dashboard__filter-button ${
-                        statusFilter === "inactive"
-                          ? "dashboard__filter-button--active"
-                          : ""
-                      }`}
-                      onClick={() => setStatusFilter("inactive")}
-                    >
-                      Inativos
-                    </button>
+                    {(["all", "active", "inactive"] as const).map((filter) => (
+                      <button
+                        key={filter}
+                        className={`dashboard__filter-button ${
+                          statusFilter === filter
+                            ? "dashboard__filter-button--active"
+                            : ""
+                        }`}
+                        onClick={() => handleFilterChange(filter)}
+                      >
+                        {filter === "all"
+                          ? "Todos"
+                          : filter === "active"
+                          ? "Ativos"
+                          : "Inativos"}
+                      </button>
+                    ))}
                   </div>
                 </div>
 
@@ -270,21 +288,29 @@ export default function DashboardPage() {
                   </p>
                 ) : error ? (
                   <p className="dashboard__error-message">{error}</p>
-                ) : filteredCourses.length === 0 ? (
+                ) : currentCourses.length === 0 ? (
                   <p className="dashboard__empty-message">
                     Nenhum curso encontrado.
                   </p>
                 ) : (
-                  <div className="dashboard__courses-grid">
-                    {filteredCourses.map((course) => (
-                      <DashboardCourseCard
-                        key={course.id}
-                        course={course}
-                        onEdit={handleEditCourse}
-                        onDelete={handleDeleteCourse}
-                      />
-                    ))}
-                  </div>
+                  <>
+                    <div className="dashboard__courses-grid">
+                      {currentCourses.map((course) => (
+                        <DashboardCourseCard
+                          key={course.id}
+                          course={course}
+                          onEdit={handleEditCourse}
+                          onDelete={handleDeleteCourse}
+                        />
+                      ))}
+                    </div>
+
+                    <Pagination
+                      currentPage={currentPage}
+                      totalPages={totalPages}
+                      onPageChange={handlePageChange}
+                    />
+                  </>
                 )}
               </div>
 
@@ -294,14 +320,12 @@ export default function DashboardPage() {
                   Lista de todas as aulas cadastradas no sistema com opções para
                   editar ou excluir.
                 </p>
-
               </div>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Create Course Modal */}
       <Modal
         isOpen={isCreateCourseModalOpen}
         onClose={() => setIsCreateCourseModalOpen(false)}
@@ -313,7 +337,6 @@ export default function DashboardPage() {
         />
       </Modal>
 
-      {/* Edit Course Modal */}
       <Modal
         isOpen={isEditCourseModalOpen}
         onClose={() => {
