@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import Header from '../../components/Header/Header';
 import Footer from '../../components/Footer/Footer';
 import { getCourseById, getPublicCourseById } from '../../services/courseService';
@@ -12,9 +12,9 @@ import './curso.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 
 export default function CourseDetailPage() {
-  const params = useParams();
-  const courseId = params.id as string;
+  const router = useRouter();
   const { user, isAuthenticated } = useUser();
+  const [courseId, setCourseId] = useState<string | null>(null);
   
   const [course, setCourse] = useState<Course | null>(null);
   const [lessons, setLessons] = useState<Lesson[]>([]);
@@ -22,8 +22,26 @@ export default function CourseDetailPage() {
   const [error, setError] = useState<string | null>(null);
   const [activeLesson, setActiveLesson] = useState<Lesson | null>(null);
 
+  // Extract course ID from URL
+  useEffect(() => {
+    const pathParts = window.location.pathname.split('/');
+    const id = pathParts[pathParts.length - 1];
+    if (id && !isNaN(Number(id))) {
+      setCourseId(id);
+    }
+  }, []);
+
+  // Redirect unauthenticated users to login page
+  useEffect(() => {
+    if (courseId && !isAuthenticated) {
+      router.push(`/login?redirect=/curso/${courseId}`);
+    }
+  }, [courseId, isAuthenticated, router]);
+
   useEffect(() => {
     const fetchData = async () => {
+      if (!courseId || !isAuthenticated) return;
+
       try {
         setLoading(true);
         
@@ -31,11 +49,11 @@ export default function CourseDetailPage() {
         const isAdmin = user?.role === 'ADMIN';
         let courseData;
         
-        if (isAuthenticated && isAdmin) {
+        if (isAdmin) {
           // Admin users can access all course details
           courseData = await getCourseById(Number(courseId));
         } else {
-          // Non-admin users should use the public endpoint
+          // Authenticated non-admin users should use the public endpoint
           courseData = await getPublicCourseById(Number(courseId));
         }
         
@@ -59,6 +77,10 @@ export default function CourseDetailPage() {
       fetchData();
     }
   }, [courseId, user, isAuthenticated]);
+
+  if (!isAuthenticated) {
+    return null; // Will be redirected to login page
+  }
 
   if (loading) {
     return (

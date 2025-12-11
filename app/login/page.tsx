@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useState } from "react";
-import { useRouter } from "next/navigation";
+import React, { useState, useEffect } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { login, fetchUserData } from "../services/authService";
 import { useUser } from "../UserContext";
 import { isValidEmail } from "../utils/validators";
@@ -21,7 +21,10 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false);
 
   const router = useRouter();
+  const searchParams = useSearchParams();
   const { login: loginUser } = useUser();
+
+  const redirectUrl = searchParams.get('redirect') || '/';
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -47,7 +50,7 @@ export default function LoginPage() {
         const userData = await fetchUserData(data.token);
         if (userData) {
           loginUser(userData);
-          router.push("/");
+          router.push(redirectUrl);
         }
       }
     } catch (err) {

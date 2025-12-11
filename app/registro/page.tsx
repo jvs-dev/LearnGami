@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { register, fetchUserData } from "../services/authService";
 import { useUser } from "../UserContext";
 import { isValidEmail } from "../utils/validators";
@@ -21,7 +21,10 @@ export default function RegistroPage() {
   const [loading, setLoading] = useState(false);
 
   const router = useRouter();
+  const searchParams = useSearchParams();
   const { login: loginUser } = useUser();
+
+  const redirectUrl = searchParams.get('redirect') || '/';
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -52,7 +55,7 @@ export default function RegistroPage() {
         const userData = await fetchUserData(data.token);
         if (userData) {
           loginUser(userData);
-          router.push("/");
+          router.push(redirectUrl);
         }
       }
     } catch (err) {
@@ -69,7 +72,7 @@ export default function RegistroPage() {
       imageSrc="https://images.pexels.com/photos/700413/pexels-photo-700413.jpeg"
       footerText="Já tem uma conta?"
       footerLinkText="Entrar"
-      footerLinkHref="/login"
+      footerLinkHref={`/login${redirectUrl !== '/' ? `?redirect=${encodeURIComponent(redirectUrl)}` : ''}`}
     >
       <form onSubmit={handleSubmit} className="auth-layout__form-wrapper">
         <Input
