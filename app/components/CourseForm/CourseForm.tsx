@@ -15,11 +15,11 @@ interface CourseFormProps {
   };
 }
 
-const CourseForm: React.FC<CourseFormProps> = ({ 
+const CourseForm = ({ 
   onSubmit, 
   onCancel,
   initialData = {} 
-}) => {
+}: CourseFormProps) => {
   const [title, setTitle] = useState(initialData.title || "");
   const [description, setDescription] = useState(initialData.description || "");
   const [duration, setDuration] = useState<number>(initialData.duration || 0);
@@ -36,8 +36,7 @@ const CourseForm: React.FC<CourseFormProps> = ({
       description,
       duration: Number(duration),
       imageUrl,
-      status,
-      // createdAt will be set by the backend
+      status,      
     };
     
     onSubmit(courseData);

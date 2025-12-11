@@ -12,7 +12,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  height: 4rem;
+  height: 4.6rem;
   padding: 0 1rem;
   max-width: 1200px;
   margin: 0 auto;
@@ -145,11 +145,11 @@
   .header__nav-list {
     gap: 1rem;
   }
-  
+
   .header__logo {
     font-size: 1.25rem;
   }
-  
+
   .header__user-dropdown {
     max-width: 150px;
     padding: 0.5rem 0.75rem;

@@ -9,7 +9,7 @@ const Footer: React.FC = () => {
       <div className="footer__container container">
         <div className="footer__content">
           <p className="footer__copyright">
-            © {new Date().getFullYear()} LearnGami. Todos os direitos reservados.
+            © {new Date().getFullYear()} JVS-DEV. Todos os direitos reservados.
           </p>
           <nav className="footer__nav">
             <ul className="footer__nav-list">
