@@ -151,7 +151,7 @@ export default function Home() {
                   </>
                 ) : (
                   <div className="home__empty">
-                    <p>Nenhum curso encontrado com esse termo.</p>
+                    <p>Nenhum curso encontrado.</p>
                   </div>
                 )}
               </>

@@ -1,107 +1,265 @@
 .account {
-  padding: 2rem 1rem;
-  min-height: calc(100vh - 200px);
+   padding: 2rem 1rem;
+   min-height: calc(100vh - 200px);
+   background: linear-gradient(135deg, var(--color-background-dark) 0%, #0c101d 100%);
 }
 
 .account__container {
-  max-width: 800px;
-  margin: 0 auto;
-  background: white;
-  border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  padding: 2rem;
+   max-width: 800px;
+   margin: 0 auto;
+   background: var(--color-background-darker);
+   border-radius: 12px;
+   padding: 2.5rem;
+   border: 1px solid var(--color-border);
+}
+
+.account__header {
+   text-align: center;
+   margin-bottom: 2.5rem;
+   position: relative;
+}
+
+.account__avatar {
+   width: 100px;
+   height: 100px;
+   background: linear-gradient(135deg, #564aff 0%, #3a2fd1 100%);
+   border-radius: 50%;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   margin: 0 auto 1.5rem;
+   box-shadow: 0 5px 15px rgba(86, 74, 255, 0.3);
+   border: 3px solid #2d2d5d;
+}
+
+.account__avatar i {
+   font-size: 3rem;
+   color: white;
 }
 
 .account__title {
-  font-size: 2rem;
-  margin-bottom: 2rem;
-  color: #333;
-  text-align: center;
+   font-size: 2.5rem;
+   margin-bottom: 0.5rem;
+   color: #e0e0e0;
+   font-weight: 700;
+   letter-spacing: -0.5px;
+}
+
+.account__subtitle {
+   color: #a0a0c0;
+   font-size: 1.1rem;
+}
+
+.account__content {
+   background: var(--color-background-darker);
+   border-radius: 10px;
+   padding: 2rem;
+   border: 1px solid var(--color-border);
 }
 
 .account__info {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
+   display: flex;
+   flex-direction: column;
+   gap: 1.8rem;
 }
 
 .account__field {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
+   display: flex;
+   flex-direction: column;
+   gap: 0.7rem;
 }
 
 .account__label {
-  font-weight: bold;
-  color: #555;
+   font-weight: 600;
+   color: #c0c0e0;
+   font-size: 1rem;
+   text-transform: uppercase;
+   letter-spacing: 0.5px;
 }
 
 .account__value {
-  padding: 0.75rem;
-  background-color: #f8f9fa;
-  border-radius: 4px;
-  border: 1px solid #e9ecef;
+   padding: 1rem 1.2rem;
+   background-color: var(--color-background-darker);
+   border-radius: 8px;
+   border: 1px solid var(--color-border);
+   display: flex;
+   align-items: center;
+}
+
+.account__value span {
+   color: #e0e0e0;
+   font-size: 1.1rem;
+   max-width: 100%;
+   white-space: nowrap;
+   overflow: hidden;
+   text-overflow: ellipsis;
+}
+
+.account__role {
+   padding: 0.4rem 1rem;
+   border-radius: 20px;
+   font-weight: 600;
+   font-size: 0.9rem;
+}
+
+.account__role--admin {
+   background: linear-gradient(135deg, #ff6b6b 0%, #d32f2f 100%);
+   color: white;
+}
+
+.account__role--user {
+   background: linear-gradient(135deg, #4caf50 0%, #2e7d32 100%);
+   color: white;
 }
 
 .account__input {
-  padding: 0.75rem;
-  border: 1px solid #ced4da;
-  border-radius: 4px;
-  font-size: 1rem;
+   padding: 1rem 1.2rem;
+   border: 1px solid #3a3a6a;
+   border-radius: 8px;
+   font-size: 1.1rem;
+   background-color: #2d2d5d;
+   color: #e0e0e0;
+   transition: all 0.3s ease;
 }
 
 .account__input:focus {
-  outline: none;
-  border-color: #007bff;
-  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+   outline: none;
+   border-color: #564aff;
+   box-shadow: 0 0 0 3px rgba(86, 74, 255, 0.3);
+}
+
+.account__input::placeholder {
+   color: #8888aa;
 }
 
 .account__actions {
-  display: flex;
-  gap: 1rem;
-  margin-top: 1rem;
-  justify-content: flex-end;
+   margin-top: 2.5rem;
+   display: flex;
+   justify-content: center;
+}
+
+.account__button-group {
+   display: flex;
+   gap: 1rem;
 }
 
 .account__button {
-  padding: 0.75rem 1.5rem;
-  border: none;
-  border-radius: 4px;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: background-color 0.2s;
+   padding: 0.9rem 1.8rem;
+   border: none;
+   border-radius: 8px;
+   font-size: 1.1rem;
+   font-weight: 600;
+   cursor: pointer;
+   transition: all 0.3s ease;
+   display: flex;
+   align-items: center;
+   gap: 0.5rem;
+   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.account__button i {
+   font-size: 1.2rem;
 }
 
 .account__button--edit {
-  background-color: #007bff;
-  color: white;
+   background: linear-gradient(135deg, #564aff 0%, #3a2fd1 100%);
+   color: white;
 }
 
 .account__button--edit:hover {
-  background-color: #0069d9;
+   background: linear-gradient(135deg, #6a5cff 0%, #4a3fe1 100%);
+   transform: translateY(-2px);
+   box-shadow: 0 6px 12px rgba(86, 74, 255, 0.4);
 }
 
 .account__button--save {
-  background-color: #28a745;
-  color: white;
+   background: linear-gradient(135deg, #4caf50 0%, #2e7d32 100%);
+   color: white;
 }
 
 .account__button--save:hover {
-  background-color: #218838;
+   transform: translateY(-2px);
+   box-shadow: 0 3px 6px rgba(76, 175, 80, 0.4);
 }
 
 .account__button--cancel {
-  background-color: #6c757d;
-  color: white;
+   background: var(--color-status-inactive-text);
+   color: white;
 }
 
 .account__button--cancel:hover {
-  background-color: #5a6268;
+   transform: translateY(-2px);
+   box-shadow: 0 3px 6px var(--color-status-inactive-text);
 }
 
 .account__error {
-  text-align: center;
-  color: #dc3545;
-  font-size: 1.2rem;
-  padding: 2rem;
+   text-align: center;
+   padding: 3rem 2rem;
+   background: #252545;
+   border-radius: 10px;
+   border: 1px solid #33335d;
+}
+
+.account__error-icon {
+   font-size: 3rem;
+   color: #ff6b6b;
+   margin-bottom: 1.5rem;
+}
+
+.account__error p {
+   color: #e0e0e0;
+   font-size: 1.3rem;
+   margin-bottom: 1.5rem;
+}
+
+.account__error-link {
+   display: inline-block;
+   padding: 0.8rem 1.5rem;
+   background: linear-gradient(135deg, #564aff 0%, #3a2fd1 100%);
+   color: white;
+   border-radius: 8px;
+   text-decoration: none;
+   font-weight: 600;
+   transition: all 0.3s ease;
+   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.account__error-link:hover {
+   background: linear-gradient(135deg, #6a5cff 0%, #4a3fe1 100%);
+   transform: translateY(-2px);
+   box-shadow: 0 6px 12px rgba(86, 74, 255, 0.4);
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+   .account__header {
+      margin-top: 20px;
+   }
+
+   .account {
+      padding: 1rem;
+   }
+
+   .account__container {
+      padding: 0;
+   }
+
+   .account__content {
+      padding: 1.5rem;
+      border: none;
+   }
+
+   .account__title {
+      font-size: 2rem;
+   }
+
+   .account__button-group {
+      flex-direction: column;
+      width: 100%;
+   }
+
+   .account__button {
+      width: 100%;
+      justify-content: center;
+   }
 }
