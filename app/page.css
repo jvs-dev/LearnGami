@@ -1,5 +1,5 @@
 .home {
-  background-color: #141414;
+  background-color: var(--color-background-dark);
   min-height: 100vh;
 }
 
@@ -13,7 +13,7 @@
   align-items: center;
   justify-content: center;
   text-align: center;
-  color: white;
+  color: var(--color-text-light);
 }
 
 .home__hero-container {
@@ -47,7 +47,7 @@
 }
 
 .home__hero-button:hover {
-  background-color: #0277e0;
+  background-color: var(--color-primary-hover);
 }
 
 .home__search-container {
@@ -60,8 +60,8 @@
   position: relative;
   width: 100%;
   padding: 0;
-  background-color: #3d3d3d;
-  border: 1px solid #444;
+  background-color: var(--color-background-input);
+  border: 1px solid var(--color-border);
   border-radius: 0.375rem;
   display: flex;
   align-items: center;
@@ -72,7 +72,7 @@
   border: 1px solid transparent;
   outline-width: 0px;
   background: transparent;
-  color: #e0e0e0;
+  color: var(--color-text-light);
   font-size: 1rem;
   font-family: var(--type-first);
 }
@@ -83,7 +83,7 @@
 }
 
 .home__search-wrapper:focus-within {
-  border: solid 1px var(--primary-color);
+  border: solid 1px var(--color-border-focus);
 }
 
 .home__search-icon {
@@ -95,24 +95,24 @@
   left: 1rem;
   top: 50%;
   transform: translateY(-50%);
-  color: #bbbbbb;
+  color: var(--color-text-medium);
   font-size: 1.2rem;
 }
 
 .home__search-input::placeholder {
-  color: #bbbbbb;
+  color: var(--color-text-medium);
 }
 
 .home__loading,
 .home__error {
   text-align: center;
   padding: 2rem;
-  color: #e0e0e0;
+  color: var(--color-text-light);
   font-size: 1.1rem;
 }
 
 .home__error {
-  color: #ef4444;
+  color: var(--color-status-inactive-text);
 }
 
 /* Responsive styles */

@@ -34,13 +34,9 @@ export default function LoginPage() {
       }
 
       if (data && data.token) {
-        console.log('Login successful, token received:', data.token);
-        const userData = await fetchUserData(data.token);
-        console.log('User data fetched:', userData);
+        const userData = await fetchUserData(data.token);        
         if (userData) {
           loginUser(userData);
-          console.log('User logged in successfully');
-          // Redirect to home page after successful login
           router.push("/");
         }
       }

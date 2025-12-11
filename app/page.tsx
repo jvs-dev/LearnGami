@@ -8,7 +8,6 @@ import "./page.css";
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import { getPublicCourses } from "./services/courseService";
 
-// Define the Course interface that matches CourseList expectations
 interface Course {
   id: string;
   title: string;
@@ -25,21 +24,19 @@ export default function Home() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  // Fetch public courses when the component mounts
   useEffect(() => {
     const fetchCourses = async () => {
       try {
         setLoading(true);
         const data = await getPublicCourses();
         
-        // Transform the data to match the CourseList interface
         const transformedCourses: Course[] = data.map(course => ({
           id: course.id?.toString() || '',
           title: course.title,
           description: course.description,
           duration: `${course.duration} minutos`,
           imageUrl: course.imageUrl || '',
-          status: 'active', // Public courses are always active
+          status: 'active',
           createdAt: course.createdAt || new Date().toISOString()
         }));
         
@@ -55,7 +52,6 @@ export default function Home() {
     fetchCourses();
   }, []);
 
-  // Filter courses based on search term
   const filteredCourses = useMemo(() => {
     return courses.filter(course => 
       course.title.toLowerCase().includes(searchTerm.toLowerCase())

@@ -55,9 +55,6 @@ const Header: React.FC = () => {
     };
   }, []);
 
-  // Debug information
-  useEffect(() => {}, [isAuthenticated, user]);
-
   return (
     <header className="header">
       <div className="header__container container">

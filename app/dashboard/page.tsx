@@ -17,7 +17,6 @@ import { fetchUserCount } from "../services/authService";
 import "./dashboard.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
 
-// Define the Course interface locally to avoid circular dependencies
 interface Course {
   id?: number;
   title: string;
@@ -63,7 +62,6 @@ export default function DashboardPage() {
     fetchCourses();
   }, []);
 
-  // Fetch user count when the component mounts
   useEffect(() => {
     const fetchCount = async () => {
       try {
@@ -83,7 +81,6 @@ export default function DashboardPage() {
     fetchCount();
   }, []);
 
-  // Filter courses based on search term and status
   const filteredCourses = useMemo(() => {
     return courses.filter((course) => {
       const matchesSearch =
@@ -100,16 +97,10 @@ export default function DashboardPage() {
 
   const handleCreateCourse = async (courseData: any) => {
     try {
-      const createdCourse = await createCourse(courseData);
-      console.log("Created course:", createdCourse);
+      const createdCourse = await createCourse(courseData);      
 
-      // Add the new course to the list
       setCourses((prev) => [...prev, createdCourse]);
-
-      // Close the modal after submission
       setIsCreateCourseModalOpen(false);
-
-      // Show success message
       alert("Curso criado com sucesso!");
     } catch (error) {
       console.error("Error creating course:", error);
@@ -135,18 +126,13 @@ export default function DashboardPage() {
       );
       console.log("Updated course:", updatedCourse);
 
-      // Update the course in the list
       setCourses((prev) =>
         prev.map((course) =>
           course.id === updatedCourse.id ? updatedCourse : course
         )
       );
-
-      // Close the modal after submission
       setIsEditCourseModalOpen(false);
       setCurrentEditingCourse(null);
-
-      // Show success message
       alert("Curso atualizado com sucesso!");
     } catch (error) {
       console.error("Error updating course:", error);
@@ -162,9 +148,7 @@ export default function DashboardPage() {
     try {
       await deleteCourse(courseId);
 
-      // Remove the course from the list
       setCourses((prev) => prev.filter((course) => course.id !== courseId));
-
       alert("Curso excluído com sucesso!");
     } catch (error) {
       console.error("Error deleting course:", error);
@@ -232,7 +216,6 @@ export default function DashboardPage() {
                   para editar ou excluir.
                 </p>
 
-                {/* Search and filter controls */}
                 <div className="dashboard__controls">
                   <div className="dashboard__search-container">
                     <div className="dashboard__search-wrapper">
@@ -311,7 +294,7 @@ export default function DashboardPage() {
                   Lista de todas as aulas cadastradas no sistema com opções para
                   editar ou excluir.
                 </p>
-                {/* Lesson list will be implemented here */}
+
               </div>
             </div>
           </div>

@@ -40,12 +40,10 @@ export default function RegistroPage() {
         return;
       }
 
-      // Fetch user data after successful registration
       if (data && data.token) {
         const userData = await fetchUserData(data.token);
         if (userData) {
           loginUser(userData);
-          // Redirect to home page after successful registration
           router.push("/");
         }
       }

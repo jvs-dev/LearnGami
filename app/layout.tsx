@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import "./styles/theme.css";
 import "../app/components/ProtectedRoute/ProtectedRoute.css";
 import "../app/components/Modal/Modal.css";
 import "../app/components/DashboardCourseCard/DashboardCourseCard.css";

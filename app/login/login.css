@@ -7,7 +7,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #141414;
+  background-color: var(--color-background-dark);
 }
 
 .login__logo-container {
@@ -25,11 +25,11 @@ body {
 }
 
 .login__logo-title {
-  font-family: var(--type-second);
+  font-family: var(--font-family-secondary);
   margin-left: 0.5rem;
   font-size: 1.8rem;
   font-weight: 700;
-  color: #e0e0e0;
+  color: var(--color-text-light);
 }
 
 .login__container {
@@ -84,25 +84,25 @@ body {
 }
 
 .login__input {
-  font-family: var(--type-third);
+  font-family: var(--font-family-tertiary);
   padding: 0.75rem;
-  border: 1px solid #444444;
+  border: 1px solid var(--color-border);
   outline-width: 0px;
   border-radius: 0.375rem;
   font-size: 1rem;
   font-weight: 500;
   transition: border-color 0.2s ease;
-  background-color: #3d3d3d;
-  color: #e0e0e0;
+  background-color: var(--color-background-input-hover);
+  color: var(--color-text-light);
 }
 
 .login__input:focus {
   outline: none;
-  border-color: var(--primary-color);
+  border-color: var(--color-border-focus);
 }
 
 .login__input::placeholder {
-  color: #e0e0e0;
+  color: var(--color-text-light);
   opacity: 0.5;
 }
 
@@ -110,8 +110,8 @@ body {
   position: relative;
   width: 100%;
   padding: 0;
-  background: #3d3d3d;
-  border: 1px solid #444444;
+  background: var(--color-background-input-hover);
+  border: 1px solid var(--color-border);
   border-radius: 0.375rem;
   display: flex;
   align-items: center;
@@ -123,6 +123,7 @@ body {
   outline-width: 0px;
   background: transparent;
   width: 100%;
+  color: var(--color-text-light);
 }
 
 .login__input--password:focus {
@@ -131,7 +132,7 @@ body {
 }
 
 .login__password-container:focus-within {
-  border: solid 1px var(--primary-color);
+  border: solid 1px var(--color-border-focus);
 }
 
 .login__password-toggle {
@@ -161,10 +162,10 @@ body {
 }
 
 .login__button {
-  font-family: var(--type-third);
+  font-family: var(--font-family-tertiary);
   font-size: 1rem;
   font-weight: 700;
-  background-color: var(--primary-color);
+  background-color: var(--color-primary);
   color: white;
   padding: 0.75rem;
   border: none;
@@ -182,17 +183,18 @@ body {
 .login__footer {
   text-align: center;
   margin-top: 1.5rem;
-  color: #bbbbbb;
+  color: var(--color-text-medium);
 }
 
 .login__link {
-  color: var(--primary-color);
+  color: var(--color-primary);
   text-decoration: none;
   font-weight: 500;
 }
 
 .login__link:hover {
   text-decoration: underline;
+  color: var(--color-primary-hover);
 }
 
 /* Responsive styles for mobile */

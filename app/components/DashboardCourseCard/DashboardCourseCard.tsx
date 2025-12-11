@@ -3,7 +3,6 @@
 import React from "react";
 import "./DashboardCourseCard.css";
 
-// Use the same Course interface as in courseService
 interface Course {
   id?: number;
   title: string;
