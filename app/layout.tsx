@@ -13,12 +13,9 @@ export const metadata: Metadata = {
   keywords:
     "origami, aprendizagem, educação, plataforma, aprenda, origami, passo a passo, tutoriais, projetos, manualidades, criatividade, relaxamento, mente, corpo, espírito, cultura, história, técnica, prática, competência, autoconfiança, realização, satisfação, bem-estar, saúde, mente, corpo, espírito, aprendizado, crescimento, desenvolvimento, conhecimento, inteligência, habilidade, profissionalismo, sucesso, realização, satisfação, bem-estar, saúde, mente, corpo, espírito, aprendizado, crescimento, desenvolvimento, conhecimento, inteligência, habilidade, sucesso",
   authors: [{ name: "LearnGami" }],
-  icons: [
-    {
-      rel: "icon",
-      url: "/favicon.svg",
-    },
-  ],
+  icons: {
+    icon: "/favicon.svg",
+  },
 };
 
 export default function RootLayout({

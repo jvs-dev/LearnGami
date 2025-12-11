@@ -132,6 +132,7 @@ The application uses Next.js App Router with the following routes:
 | `/registro` | User registration page | None |
 | `/conta` | User account management | Required |
 | `/dashboard` | Admin dashboard | Admin Required |
+| `/curso` | User course listing | Required |
 | `/curso/[id]` | Course details and lessons | Required |
 
 ## 🔐 Authentication System

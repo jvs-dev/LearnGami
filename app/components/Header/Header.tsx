@@ -62,6 +62,8 @@ const Header: React.FC = () => {
           <img
             src="/favicon.svg"
             alt="LearnGami"
+            width="32"
+            height="32"
             className="header__logo-img"
           />
           <span className="header__logo-text">LearnGami</span>
