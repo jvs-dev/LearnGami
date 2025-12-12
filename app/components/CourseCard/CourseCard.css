@@ -9,7 +9,6 @@
   flex-direction: column;
   height: 100%;
   text-decoration: none;
-  /* Garante que o link não sublinhe tudo */
 }
 
 .course-card:hover {

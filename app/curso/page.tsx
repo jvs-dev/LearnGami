@@ -1,16 +1,16 @@
-'use client';
+"use client";
 
-import React, { useState, useMemo, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-import Header from '../components/Header/Header';
-import Footer from '../components/Footer/Footer';
-import { useUser } from '../UserContext';
-import { getPublicCourses } from '../services/courseService';
-import CourseList from '../components/CourseList/CourseList';
-import Pagination from '../components/Pagination/Pagination';
-import ContinueWatchingCard from '../components/ContinueWatchingCard/ContinueWatchingCard';
-import '../page.css';
-import 'bootstrap-icons/font/bootstrap-icons.css';
+import React, { useState, useMemo, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import Header from "../components/Header/Header";
+import Footer from "../components/Footer/Footer";
+import { useUser } from "../UserContext";
+import { getPublicCourses } from "../services/courseService";
+import CourseList from "../components/CourseList/CourseList";
+import Pagination from "../components/Pagination/Pagination";
+import ContinueWatchingCard from "../components/ContinueWatchingCard/ContinueWatchingCard";
+import "../page.css";
+import "bootstrap-icons/font/bootstrap-icons.css";
 
 interface TransformedCourse {
   id: string;
@@ -28,7 +28,7 @@ export default function CoursesPage() {
   const [courses, setCourses] = useState<TransformedCourse[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [lastViewedCourse, setLastViewedCourse] = useState<any>(null);
   const coursesPerPage = 6;
@@ -36,7 +36,7 @@ export default function CoursesPage() {
   // Redirect unauthenticated users to login page
   useEffect(() => {
     if (!isAuthenticated) {
-      router.push('/login');
+      router.push("/login");
     }
   }, [isAuthenticated, router]);
 
@@ -47,14 +47,13 @@ export default function CoursesPage() {
     }
   }, [isAuthenticated]);
 
-  useEffect(() => {
-    // Check for last viewed course in localStorage
-    const savedLastViewed = localStorage.getItem('lastViewedCourse');
+  useEffect(() => {    
+    const savedLastViewed = localStorage.getItem("lastViewedCourse");
     if (savedLastViewed) {
       try {
         setLastViewedCourse(JSON.parse(savedLastViewed));
       } catch (e) {
-        console.error('Failed to parse last viewed course data', e);
+        console.error("Failed to parse last viewed course data", e);
       }
     }
 
@@ -76,9 +75,9 @@ export default function CoursesPage() {
         setCourses(transformedCourses);
       } catch (err) {
         setError(
-          err instanceof Error ? err.message : 'Failed to fetch courses'
+          err instanceof Error ? err.message : "Failed to fetch courses"
         );
-        console.error('Error fetching courses:', err);
+        console.error("Error fetching courses:", err);
       } finally {
         setLoading(false);
       }
@@ -130,7 +129,7 @@ export default function CoursesPage() {
               lessonName={lastViewedCourse.lessonName}
               onDismiss={() => {
                 setLastViewedCourse(null);
-                localStorage.removeItem('lastViewedCourse');
+                localStorage.removeItem("lastViewedCourse");
               }}
             />
           )}
@@ -154,7 +153,6 @@ export default function CoursesPage() {
                 <div className="spinner-border text-primary" role="status">
                   <span className="visually-hidden">Carregando...</span>
                 </div>
-                <p>Carregando cursos...</p>
               </div>
             )}
 
