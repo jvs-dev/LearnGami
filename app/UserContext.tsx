@@ -61,7 +61,8 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
   const logout = () => {
     setUser(null);
     setIsAuthenticated(false);
-    deleteCookie('token');
+    deleteCookie('token');    
+    localStorage.removeItem('lastViewedCourse');
   };
 
   return (

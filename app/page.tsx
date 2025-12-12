@@ -5,10 +5,12 @@ import CourseList from "./components/CourseList/CourseList";
 import Footer from "./components/Footer/Footer";
 import Header from "./components/Header/Header";
 import Pagination from "./components/Pagination/Pagination";
+import ContinueWatchingCard from "./components/ContinueWatchingCard/ContinueWatchingCard";
 import "./page.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import { getPublicCourses } from "./services/courseService";
 import { Course as BaseCourse } from "./types";
+import { useUser } from "./UserContext";
 
 interface TransformedCourse {
   id: string;
@@ -21,15 +23,26 @@ interface TransformedCourse {
 }
 
 export default function Home() {
+  const { isAuthenticated } = useUser();
   const [searchTerm, setSearchTerm] = useState("");
   const [courses, setCourses] = useState<TransformedCourse[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [lastViewedCourse, setLastViewedCourse] = useState<any>(null);
 
   const [currentPage, setCurrentPage] = useState(1);
   const coursesPerPage = 6;
 
-  useEffect(() => {
+  useEffect(() => {    
+    const savedLastViewed = localStorage.getItem('lastViewedCourse');
+    if (savedLastViewed) {
+      try {
+        setLastViewedCourse(JSON.parse(savedLastViewed));
+      } catch (e) {
+        console.error('Failed to parse last viewed course data', e);
+      }
+    }
+
     const fetchCourses = async () => {
       try {
         setLoading(true);
@@ -58,6 +71,13 @@ export default function Home() {
 
     fetchCourses();
   }, []);
+
+  // Clear last viewed course when user logs out
+  useEffect(() => {
+    if (!isAuthenticated) {
+      setLastViewedCourse(null);
+    }
+  }, [isAuthenticated]);
 
   const filteredCourses = useMemo(() => {
     return courses.filter((course) =>
@@ -100,6 +120,18 @@ export default function Home() {
               </a>
             </div>
           </section>
+
+          {lastViewedCourse && (
+            <ContinueWatchingCard
+              courseId={lastViewedCourse.courseId}
+              courseTitle={lastViewedCourse.courseTitle}
+              lessonName={lastViewedCourse.lessonName}
+              onDismiss={() => {
+                setLastViewedCourse(null);
+                localStorage.removeItem('lastViewedCourse');
+              }}
+            />
+          )}
 
           <div className="home__search-container">
             <div className="home__search-wrapper">

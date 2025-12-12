@@ -8,7 +8,8 @@
   display: flex;
   flex-direction: column;
   height: 100%;
-  text-decoration: none; /* Garante que o link não sublinhe tudo */
+  text-decoration: none;
+  /* Garante que o link não sublinhe tudo */
 }
 
 .course-card:hover {
@@ -56,7 +57,8 @@
 }
 
 .course-card__title {
-  font-size: 1.125rem;
+  font-family: var(--type-second);
+  font-size: 1.28rem;
   font-weight: 700;
   color: var(--color-text-light);
   margin-bottom: 0.5rem;
@@ -67,10 +69,11 @@
 }
 
 .course-card__new-badge {
+  font-family: var(--type-first);
   background-color: var(--color-primary);
   color: white;
   font-size: 0.65rem;
-  font-weight: 700;
+  font-weight: 800;
   padding: 0.15rem 0.4rem;
   border-radius: 99px;
   text-transform: uppercase;

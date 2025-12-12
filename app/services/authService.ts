@@ -99,7 +99,8 @@ export const login = async (email: string, password: string) => {
 };
 
 export const logout = () => {
-  deleteCookie('token');
+  deleteCookie('token');  
+  localStorage.removeItem('lastViewedCourse');
 };
 
 export const isAuthenticated = () => {

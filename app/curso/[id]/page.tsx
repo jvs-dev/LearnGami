@@ -175,7 +175,19 @@ export default function CourseDetailPage() {
                           ? 'course-detail__lesson-item--active' 
                           : ''
                       }`}
-                      onClick={() => setActiveLesson(lesson)}
+                      onClick={() => {
+                        // Save the last viewed course and lesson to localStorage
+                        if (course) {
+                          const lastViewed = {
+                            courseId: course.id,
+                            courseTitle: course.title,
+                            lessonId: lesson.id,
+                            lessonName: lesson.name
+                          };
+                          localStorage.setItem('lastViewedCourse', JSON.stringify(lastViewed));
+                        }
+                        setActiveLesson(lesson);
+                      }}
                     >
                       <div className="course-detail__lesson-info">
                         <span className="course-detail__lesson-number">

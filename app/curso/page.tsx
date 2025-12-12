@@ -8,6 +8,7 @@ import { useUser } from '../UserContext';
 import { getPublicCourses } from '../services/courseService';
 import CourseList from '../components/CourseList/CourseList';
 import Pagination from '../components/Pagination/Pagination';
+import ContinueWatchingCard from '../components/ContinueWatchingCard/ContinueWatchingCard';
 import '../page.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 
@@ -29,6 +30,7 @@ export default function CoursesPage() {
   const [error, setError] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
+  const [lastViewedCourse, setLastViewedCourse] = useState<any>(null);
   const coursesPerPage = 6;
 
   // Redirect unauthenticated users to login page
@@ -38,7 +40,24 @@ export default function CoursesPage() {
     }
   }, [isAuthenticated, router]);
 
+  // Clear last viewed course when user logs out
   useEffect(() => {
+    if (!isAuthenticated) {
+      setLastViewedCourse(null);
+    }
+  }, [isAuthenticated]);
+
+  useEffect(() => {
+    // Check for last viewed course in localStorage
+    const savedLastViewed = localStorage.getItem('lastViewedCourse');
+    if (savedLastViewed) {
+      try {
+        setLastViewedCourse(JSON.parse(savedLastViewed));
+      } catch (e) {
+        console.error('Failed to parse last viewed course data', e);
+      }
+    }
+
     const fetchCourses = async () => {
       try {
         setLoading(true);
@@ -104,6 +123,18 @@ export default function CoursesPage() {
       <Header />
       <div className="home">
         <main className="home__main">
+          {lastViewedCourse && (
+            <ContinueWatchingCard
+              courseId={lastViewedCourse.courseId}
+              courseTitle={lastViewedCourse.courseTitle}
+              lessonName={lastViewedCourse.lessonName}
+              onDismiss={() => {
+                setLastViewedCourse(null);
+                localStorage.removeItem('lastViewedCourse');
+              }}
+            />
+          )}
+
           <div className="home__search-container">
             <div className="home__search-wrapper">
               <input

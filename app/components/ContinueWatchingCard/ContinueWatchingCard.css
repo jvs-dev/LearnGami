@@ -1,0 +1,97 @@
+.continue-watching-card {
+  background: linear-gradient(145deg, #564aff 0%, #1e1e1e 100%);
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  padding: 1rem 1.5rem;
+  margin: 2rem auto;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  color: white;
+  max-width: 600px;
+}
+
+.continue-watching-card__content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.continue-watching-card__text {
+  flex: 1;
+  min-width: 250px;
+}
+
+.continue-watching-card__title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.continue-watching-card__course {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+}
+
+.continue-watching-card__lesson {
+  font-size: 1rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.continue-watching-card__actions {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+.continue-watching-card__button {
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-decoration: none;
+  display: inline-block;
+  border: none;
+  font-size: 1rem;
+}
+
+.continue-watching-card__button--continue {
+  background-color: white;
+  color: var(--color-primary);
+}
+
+.continue-watching-card__button--continue:hover {
+  background-color: #f0f0f0;
+  transform: translateY(-2px);
+}
+
+.continue-watching-card__button--dismiss {
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+
+.continue-watching-card__button--dismiss:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: scale(1.05);
+}
+
+@media (max-width: 768px) {
+  .continue-watching-card__content {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .continue-watching-card__actions {
+    width: 100%;
+    justify-content: flex-end;
+  }
+}
