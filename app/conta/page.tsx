@@ -14,9 +14,7 @@ export default function AccountPage() {
   const [name, setName] = useState(user?.name || "");
   const [email, setEmail] = useState(user?.email || "");
 
-  const handleSave = () => {
-    // In a real application, you would send the updated data to the server here
-    console.log("Saving user data:", { name, email });
+  const handleSave = () => {    
     setEditing(false);
   };
 

@@ -84,7 +84,6 @@
   color: #dc2626;
 }
 
-/* User dropdown styles */
 .header__user-dropdown {
   display: flex;
   align-items: center;
@@ -97,6 +96,14 @@
   overflow: hidden;
   text-overflow: ellipsis;
   max-width: 200px;
+}
+
+.user-name-full {
+  display: inline;
+}
+
+.user-name-mobile {
+  display: none;
 }
 
 .header__dropdown-menu {
@@ -145,6 +152,7 @@
   .header__container {
     height: 4rem;
   }
+
   .header__nav-list {
     gap: 1rem;
   }
@@ -158,6 +166,7 @@
     padding: 0.5rem 0.75rem;
     font-size: 0.9rem;
   }
+
   .header__logo-text {
     display: none;
   }
@@ -168,5 +177,13 @@
     max-width: 120px;
     padding: 0.5rem 0.75rem;
     font-size: 0.8rem;
+  }
+
+  .user-name-full {
+    display: none;
+  }
+
+  .user-name-mobile {
+    display: inline;
   }
 }

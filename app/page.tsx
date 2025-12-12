@@ -11,6 +11,7 @@ import "bootstrap-icons/font/bootstrap-icons.css";
 import { getPublicCourses } from "./services/courseService";
 import { Course as BaseCourse } from "./types";
 import { useUser } from "./UserContext";
+import LoadingSpinner from "./components/ui/Loader/LoadingSpinner";
 
 interface TransformedCourse {
   id: string;
@@ -33,13 +34,13 @@ export default function Home() {
   const [currentPage, setCurrentPage] = useState(1);
   const coursesPerPage = 6;
 
-  useEffect(() => {    
-    const savedLastViewed = localStorage.getItem('lastViewedCourse');
+  useEffect(() => {
+    const savedLastViewed = localStorage.getItem("lastViewedCourse");
     if (savedLastViewed) {
       try {
         setLastViewedCourse(JSON.parse(savedLastViewed));
       } catch (e) {
-        console.error('Failed to parse last viewed course data', e);
+        console.error("Failed to parse last viewed course data", e);
       }
     }
 
@@ -128,7 +129,7 @@ export default function Home() {
               lessonName={lastViewedCourse.lessonName}
               onDismiss={() => {
                 setLastViewedCourse(null);
-                localStorage.removeItem('lastViewedCourse');
+                localStorage.removeItem("lastViewedCourse");
               }}
             />
           )}
@@ -148,11 +149,9 @@ export default function Home() {
 
           <div id="cursos-lista">
             {loading && (
-              <div className="home__loading">
-                <div className="spinner-border text-primary" role="status">
-                  <span className="visually-hidden">Carregando...</span>
-                </div>
-                <p>Carregando cursos...</p>
+              <div className="home__loading" role="status">
+                <LoadingSpinner />
+                <span className="visually-hidden">Carregando...</span>
               </div>
             )}
 

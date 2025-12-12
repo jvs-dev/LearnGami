@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useUser } from "../../UserContext";
 import { getCookie } from "../../utils/cookies";
+import LoadingSpinner from "../ui/Loader/LoadingSpinner";
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
@@ -48,7 +49,7 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
     return (
       <div className="protected-route">
         <div className="protected-route__loading">
-          <div className="protected-route__loading-spinner"></div>
+          <LoadingSpinner />
           <p className="protected-route__loading-text">
             Verificando permissões...
           </p>

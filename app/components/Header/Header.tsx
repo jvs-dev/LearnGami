@@ -13,20 +13,23 @@ const Header: React.FC = () => {
   const dropdownRef = useRef<HTMLLIElement>(null);
   const router = useRouter();
 
+  const getUserFirstNames = () => {
+    if (user?.name) {
+      const nameParts = user.name.split(" ");
+      const firstName = nameParts[0];
+      const secondName = nameParts.length > 1 ? nameParts[1] : "";
+      return {
+        full: secondName ? `${firstName} ${secondName}` : firstName,
+        first: firstName
+      };
+    }
+    return { full: "", first: "" };
+  };
+
   const handleLogout = () => {
     authLogout();
     logout();
     setIsDropdownOpen(false);
-  };
-
-  const getUserFirstName = () => {
-    if (user?.name) {
-      const nameParts = user.name.split(" ");
-      return nameParts.length > 1
-        ? `${nameParts[0]} ${nameParts[1]}`
-        : nameParts[0];
-    }
-    return "";
   };
 
   const handleDashboardClick = (e: React.MouseEvent) => {
@@ -54,6 +57,8 @@ const Header: React.FC = () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
+
+  const { full: fullUserName, first: firstUserName } = getUserFirstNames();
 
   return (
     <header className="header">
@@ -93,7 +98,8 @@ const Header: React.FC = () => {
                     onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                     className="header__nav-button header__user-dropdown"
                   >
-                    {getUserFirstName()} ▼
+                    <span className="user-name-full">{fullUserName}</span>
+                    <span className="user-name-mobile">{firstUserName}</span> ▼
                   </button>
                   {isDropdownOpen && (
                     <div className="header__dropdown-menu">

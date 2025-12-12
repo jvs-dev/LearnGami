@@ -111,6 +111,15 @@
   font-size: 1.1rem;
 }
 
+.home__loading {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 18px;
+}
+
 .home__error {
   color: var(--color-status-inactive-text);
 }
@@ -187,11 +196,11 @@
   .home__search-container {
     padding: 0 1rem;
   }
-  
+
   .home__pagination {
     padding: 1.5rem 0.5rem;
   }
-  
+
   .home__pagination-button,
   .home__pagination-number {
     min-width: 2rem;

@@ -45,7 +45,6 @@
   align-items: center;
 }
 
-/* Garante espaço para o ícone não ficar em cima do texto */
 .form-input--password {
   padding-right: 3rem; 
 }
@@ -56,22 +55,22 @@
 
 .password-toggle {
   position: absolute;
-  right: 0.75rem; /* Ajustado para não colar na borda */
+  right: 0.75rem;
   top: 50%;
   transform: translateY(-50%);
   background: none;
   border: none;
-  color: var(--color-text-medium); /* Cor cinza para contraste */
+  color: var(--color-text-medium);
   cursor: pointer;
-  padding: 0.25rem; /* Área de clique maior */
+  padding: 0.25rem;
   font-size: 1.2rem;
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 2; /* Garante que fique acima do input */
+  z-index: 2;
   transition: color 0.2s ease;
 }
 
 .password-toggle:hover {
-  color: var(--color-text-light); /* Fica mais claro ao passar o mouse */
+  color: var(--color-text-light);
 }
